@@ -1,0 +1,5 @@
+com\scottlogic\UserPost.class
+com\scottlogic\PostSorter.class
+com\scottlogic\AuthorPostSorter.class
+com\scottlogic\Main.class
+com\scottlogic\SortOrder.class

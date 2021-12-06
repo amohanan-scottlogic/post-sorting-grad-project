@@ -21,7 +21,10 @@ public class Main {
                 "An example of a post \nwith lines breaks.", 3);
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        AuthorPostSorter aps = new AuthorPostSorter();
+        aps.authorSorter(userPosts);
         printAllUserPosts(userPosts);
+
     }
 
     /**
