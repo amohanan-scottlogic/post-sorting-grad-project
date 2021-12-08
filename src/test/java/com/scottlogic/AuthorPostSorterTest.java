@@ -7,60 +7,87 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthorPostSorterTest {
 
-    AuthorPostSorter aps = new AuthorPostSorter();
-    private UserPost userPost1 = new UserPost("Joe Bloggs",
-            OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC),
-            "Hello World!", 2);
+    AuthorPostSorter sortByAuthor = new AuthorPostSorter();
+    private UserPost createUserPost (String name ) {
 
-    private UserPost userPost2 = new UserPost("Joey Bloggs",
-            OffsetDateTime.of(2020, 1, 3, 8, 53, 34, 0, ZoneOffset.UTC),
-            "Another example post.", 1);
+        return new UserPost(name,
+                OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC),
+                "Hello World!", 2);
+    }
 
-    private UserPost userPost3 = new UserPost("Jane Smith",
-            OffsetDateTime.of(2020, 3, 12, 13, 22, 12, 0, ZoneOffset.UTC),
-            "An example of a post \nwith lines breaks.", 3);
 
-    private UserPost userPost4 = new UserPost("May Bloggs",
-            OffsetDateTime.of(2020, 1, 3, 8, 53, 34, 0, ZoneOffset.UTC),
-            "Another example post.", 1);
 
-    private UserPost userPost5 = new UserPost(null,
-            OffsetDateTime.of(2020, 3, 12, 13, 22, 12, 0, ZoneOffset.UTC),
-            "An example of a post \nwith lines breaks.", 3);
 
-//    Scanner scan = new Scanner(System.in);
-//    system.out.println("Please enter names");
-//    String s = scan.next();
-
-    List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, userPost5);
 
     @Test
-    public void authorSorter_mixedValidNames_correctListReturned() {
+    public void authorSorter_mixedValidNames_correctListReturnedAsc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("Joe Bloggs");
+        UserPost userPost3 = createUserPost("May Bloggs");
+        UserPost userPost4 = createUserPost("Joe Blogg");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        aps.authorSorter(userPosts);
-        List<UserPost> sorted = Arrays.asList(userPost3, userPost1, userPost2, userPost4);
-        Assert.assertEquals(userPosts, sorted);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> sorted = Arrays.asList(userPost4, userPost1, userPost2, userPost3);
+        Assert.assertEquals(sortByMethod, sorted);
     }
 
     @Test
-    public void authorSorter_oneObjectList_oneObjectListReturned() {
+    public void authorSorter_oneObjectList_oneObjectListReturnedAsc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1);
-        aps.authorSorter(userPosts);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.ASC);
         List<UserPost> sorted = Arrays.asList(userPost1);
-        Assert.assertEquals(userPosts, sorted);
+        Assert.assertEquals(sortByMethod, sorted);
     }
 
     @Test
-    public void authorSorter_nullNames_returnNull() {
+    public void authorSorter_nullNames_returnNullLastAsc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("Joe Bloggs");
+        UserPost userPost3 = createUserPost("May Bloggs");
+        UserPost userPost4 = createUserPost("Joe Blogg");
+        UserPost userPost5 = createUserPost(null);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, userPost5);
-        List<UserPost> sorted = aps.authorSorter(userPosts);
-        Assert.assertNull(sorted);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> sorted = Arrays.asList( userPost4, userPost1, userPost2,userPost3, userPost5);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void authorSorter_mixedValidNames_correctListReturnedDesc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("Joe Bloggs");
+        UserPost userPost3 = createUserPost("May Bloggs");
+        UserPost userPost4 = createUserPost("Joe Blogg");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost1, userPost4);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void authorSorter_oneObjectList_oneObjectListReturnedDesc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost1);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void authorSorter_nullNames_returnNullLastDesc() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost(null);
+        UserPost userPost3 = createUserPost("May Bloggs");
+        UserPost userPost4 = createUserPost("Joe Blogg");
+        UserPost userPost5 = createUserPost("Joe Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, userPost5);
+        List<UserPost> sortByMethod = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost3, userPost1, userPost5, userPost4, userPost2);
+        Assert.assertEquals(sortByMethod, sorted);
     }
 
 }

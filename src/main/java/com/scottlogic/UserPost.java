@@ -4,10 +4,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-
 public class UserPost {
-    @NotNull private String author;
+    private String author;
     private OffsetDateTime dateTime;
     private String contents;
     private int likeCount;

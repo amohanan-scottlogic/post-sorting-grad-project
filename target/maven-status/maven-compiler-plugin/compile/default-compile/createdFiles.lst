@@ -1,5 +1,10 @@
-com\scottlogic\UserPost.class
+com\scottlogic\DatePostSorter.class
 com\scottlogic\PostSorter.class
-com\scottlogic\AuthorPostSorter.class
 com\scottlogic\Main.class
+com\scottlogic\DatePostSorter$1.class
+com\scottlogic\UserPost.class
+com\scottlogic\AuthorPostSorter$1.class
+com\scottlogic\LikesPostSorter.class
+com\scottlogic\LikesPostSorter$1.class
+com\scottlogic\AuthorPostSorter.class
 com\scottlogic\SortOrder.class
