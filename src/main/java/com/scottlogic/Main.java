@@ -22,7 +22,7 @@ public class Main {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         AuthorPostSorter aps = new AuthorPostSorter();
-        aps.authorSorter(userPosts);
+        aps.sort(userPosts, SortOrder.ASC);
         printAllUserPosts(userPosts);
 
     }
