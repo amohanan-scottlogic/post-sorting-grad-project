@@ -8,13 +8,9 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class LikesPostSorterTest {
 
     LikesPostSorter sortByLikes = new LikesPostSorter();
-
-
     private UserPost createUserPost (int likes ) {
 
         return new UserPost("Joe Bloggs",
@@ -23,7 +19,7 @@ public class LikesPostSorterTest {
     }
 
     @Test
-    public void likesSorter_mixedValidLikes_correctListReturnedAsc() {
+    public void sort_mixedValidLikesAsc_correctListReturned() {
         UserPost userPost1 = createUserPost(3);
         UserPost userPost2 = createUserPost(1);
         UserPost userPost3 = createUserPost(0);
@@ -35,7 +31,7 @@ public class LikesPostSorterTest {
     }
 
     @Test
-    public void likesSorter_negativeLikes_correctListReturnedAsc() {
+    public void sort_negativeLikesAsc_correctListReturned() {
         UserPost userPost1 = createUserPost(3);
         UserPost userPost2 = createUserPost(1);
         UserPost userPost3 = createUserPost(0);
@@ -47,7 +43,7 @@ public class LikesPostSorterTest {
     }
 
     @Test
-    public void likesSorter_mixedValidLikes_correctListReturnedDesc() {
+    public void sort_mixedValidLikesDesc_correctListReturned() {
         UserPost userPost1 = createUserPost(3);
         UserPost userPost2 = createUserPost(1);
         UserPost userPost3 = createUserPost(0);
@@ -59,7 +55,7 @@ public class LikesPostSorterTest {
     }
 
     @Test
-    public void likesSorter_negativeLikes_correctListReturnedDesc() {
+    public void likesSorter_negativeLikesDesc_correctListReturned() {
         UserPost userPost1 = createUserPost(3);
         UserPost userPost2 = createUserPost(1);
         UserPost userPost3 = createUserPost(-1);
