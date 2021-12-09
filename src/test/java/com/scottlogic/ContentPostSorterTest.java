@@ -1,4 +1,5 @@
 package com.scottlogic;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -7,30 +8,112 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class ContentPostSorterTest {
 
     ContentPostSorter sortByContent = new ContentPostSorter();
 
-    UserPost userPost1 = new UserPost("Joe Bloggs",
-            OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC),
-            "Hello World!", 2);
+    private UserPost createUserPost(String content) {
 
-    UserPost userPost2 = new UserPost("Joe Bloggs",
-            OffsetDateTime.of(2020, 1, 3, 8, 53, 34, 0, ZoneOffset.UTC),
-            "Another example post.", 1);
-
-    UserPost userPost3 = new UserPost("Jane Smith",
-            OffsetDateTime.of(2020, 3, 12, 13, 22, 12, 0, ZoneOffset.UTC),
-            "An example of a post \nwith lines breaks.", 3);
+        return new UserPost("Joe Bloggs",
+                OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC),
+                content, 2);
+    }
 
     @Test
-    public void contentSorter_mixedValidNames_correctListReturnedAsc() {
+    public void sort_mixedLengthPostsAsc_correctListReturned() {
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("Another example post.");
+        UserPost userPost3 = createUserPost("Hello World!");
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList( userPost3, userPost2, userPost1);
+        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost1);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_sameLengthPostsAsc_correctListReturned() {
+        UserPost userPost1 = createUserPost("Hello World!");
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.ASC);
+        List<UserPost> sorted = Arrays.asList(userPost1, userPost3, userPost2);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_newLineSamePostsAsc_correctListReturned() {
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("An example of a post with lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+        UserPost userPost4 = createUserPost("An example of a post without line breaks");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.ASC);
+        List<UserPost> sorted = Arrays.asList(userPost3, userPost1, userPost2, userPost4);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_nullContentAsc_nullLastReturned() {
+        UserPost userPost1 = createUserPost(null);
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.ASC);
+        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost1);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_mixedLengthPostsDesc_correctListReturned() {
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("Another example post.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost1, userPost2, userPost3);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_sameLengthPostsDesc_correctListReturned() {
+        UserPost userPost1 = createUserPost("Hello World!");
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost2, userPost1, userPost3);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_newLineSamePostsDesc_correctListReturned() {
+        UserPost userPost1 = createUserPost("An example of a post with lines breaks.");
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+        UserPost userPost4 = createUserPost("An example of a post without line breaks");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost4, userPost1, userPost2, userPost3);
+        Assert.assertEquals(sortByMethod, sorted);
+    }
+
+    @Test
+    public void sort_nullContentDesc_nullLastReturned() {
+        UserPost userPost1 = createUserPost(null);
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> sortByMethod = sortByContent.sort(userPosts, SortOrder.DESC);
+        List<UserPost> sorted = Arrays.asList(userPost2, userPost3, userPost1);
         Assert.assertEquals(sortByMethod, sorted);
     }
 }
