@@ -25,9 +25,9 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        sortByLikes.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost4, userPost1);
-        Assert.assertEquals(userPosts, sorted);
+        List<UserPost> actualResult =sortByLikes.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost4, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
@@ -37,10 +37,21 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(-1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        sortByLikes.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList(userPost4, userPost3, userPost2, userPost1);
-        Assert.assertEquals(userPosts, sorted);
+        List<UserPost> actualResult =sortByLikes.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost4, userPost3, userPost2, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
     }
+    @Test
+    public void sort_nullPostsAsc_nullRemovedReturned() {
+        UserPost userPost1 = null;
+        UserPost userPost2 = createUserPost(0);
+        UserPost userPost3 = createUserPost(-1);
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult =sortByLikes.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList( userPost3, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
 
     @Test
     public void sort_mixedValidLikesDesc_correctListReturned() {
@@ -49,9 +60,9 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        sortByLikes.sort(userPosts, SortOrder.DESC);
-        List<UserPost> sorted = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
-        Assert.assertEquals(userPosts, sorted);
+        List<UserPost> actualResult =sortByLikes.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
@@ -61,8 +72,8 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(-1);
         UserPost userPost4 = createUserPost(0);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        sortByLikes.sort(userPosts, SortOrder.DESC);
-        List<UserPost> sorted = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
-        Assert.assertEquals(userPosts, sorted);
+        List<UserPost> actualResult =sortByLikes.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }

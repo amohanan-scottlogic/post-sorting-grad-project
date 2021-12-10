@@ -9,6 +9,9 @@ public class DatePostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
+        NullPostChecker checkForNullPost = new NullPostChecker();
+        inputList = checkForNullPost.nullPostCheck(inputList);
+
         switch (orderIn) {
 
             case ASC -> Collections.sort(inputList, Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsLast(Comparator.naturalOrder()))));
