@@ -1,5 +1,7 @@
 package com.scottlogic;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class AuthorFilter implements PostFilter {
         if(name==null) return filteredList;
 
         for (UserPost userPost : inputList) {
-            String postName = userPost.getAuthor();
-            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(postName, name)) {filteredList.add(userPost);}
+
+            if(StringUtils.containsIgnoreCase(userPost.getAuthor(), name)) {filteredList.add(userPost);}
         }
         return filteredList;
     }
