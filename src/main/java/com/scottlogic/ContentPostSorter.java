@@ -5,13 +5,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class ContentPostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
-
         List<UserPost> contentNull = new ArrayList<>();
-
         List<UserPost> remainingPosts = new ArrayList<>();
+
+        NullPostChecker checkForNullPost = new NullPostChecker();
+        inputList = checkForNullPost.nullPostCheck(inputList);
 
         for (UserPost userPost : inputList) {
             if (userPost.getContents() == null)
