@@ -10,6 +10,8 @@ public class FullNamePostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
+        NullPostChecker checkForNullPost = new NullPostChecker();
+        inputList = checkForNullPost.nullPostCheck(inputList);
         List<UserPost> namesNull = new ArrayList<>();
         List<UserPost> namesSpace = new ArrayList<>();
         List<UserPost> remainingPosts = new ArrayList<>();
@@ -25,59 +27,27 @@ public class FullNamePostSorter implements PostSorter {
         switch (orderIn) {
 
             case ASC -> Collections.sort(remainingPosts, Comparator.comparing(UserPost::getAuthor, (name1, name2) -> {
-                String firstName1;
-                String firstName2;
-                String lastName1;
-                String lastName2;
 
-                String[] split1 = name1.split(" ");
-                firstName1 = split1[0];
-                if (split1.length == 1) lastName1 = " ";
-                else lastName1 = split1[1];
-                String[] split2 = name2.split(" ");
-                firstName2 = split2[0];
-                if (split2.length == 1) lastName2 = " ";
-                else lastName2 = split2[1];
-
-                if (lastName1.compareTo(lastName2) == 0) {
-
-                    if (firstName1.compareTo(firstName2) == 0)
+                String[] splitName1 = nameSplit(name1);
+                String[] splitName2 = nameSplit(name2);
+                if (splitName1[1].compareTo(splitName2[1]) == 0) {
+                    if (splitName1[0].compareTo(splitName2[0]) == 0)
                         return 0;
-                    else if (firstName1.compareTo(firstName2) > 0)
-                        return 1;
-                    else return -1;
-
-                } else if (lastName1.compareTo(lastName2) > 0)
-                    return 1;
-                else return -1;
+                    else return  (splitName1[0].compareTo(splitName2[0]) > 0) ? 1 : -1;
+                }
+                else return  (splitName1[1].compareTo(splitName2[1]) > 0) ? 1 : -1;
             }));
 
             case DESC -> Collections.sort(remainingPosts, Comparator.comparing(UserPost::getAuthor, (name1, name2) -> {
-                String firstName1;
-                String firstName2;
-                String lastName1;
-                String lastName2;
 
-                String[] split1 = name1.split(" ");
-                firstName1 = split1[0];
-                if (split1.length == 1) lastName1 = " ";
-                else lastName1 = split1[1];
-                String[] split2 = name2.split(" ");
-                firstName2 = split2[0];
-                if (split2.length == 1) lastName2 = " ";
-                else lastName2 = split2[1];
-
-                if (lastName1.compareTo(lastName2) == 0) {
-
-                    if (firstName1.compareTo(firstName2) == 0)
+                String[] splitName1 = nameSplit(name1);
+                String[] splitName2 = nameSplit(name2);
+                if (splitName1[1].compareTo(splitName2[1]) == 0) {
+                    if (splitName1[0].compareTo(splitName2[0]) == 0)
                         return 0;
-                    else if (firstName1.compareTo(firstName2) > 0)
-                        return -1;
-                    else return 1;
-
-                } else if (lastName1.compareTo(lastName2) > 0)
-                    return -1;
-                else return 1;
+                    else return  (splitName1[0].compareTo(splitName2[0]) > 0) ? -1 : 1;
+                }
+                else return  (splitName1[1].compareTo(splitName2[1]) > 0) ? -1 : 1;
             }));
         }
         if (namesSpace != null) {
@@ -86,7 +56,17 @@ public class FullNamePostSorter implements PostSorter {
         if (namesNull != null) {
             remainingPosts.addAll(namesNull);
         }
-
         return remainingPosts;
+    }
+
+    private String[] nameSplit(String name) {
+
+        String[] splitted = name.split(" ");
+        String[] names = new String[2];
+        int numberOfNames = splitted.length;
+        names[0] = splitted[0];
+        names[1] = numberOfNames > 1 ? splitted[numberOfNames - 1] : " ";
+
+        return names;
     }
 }
