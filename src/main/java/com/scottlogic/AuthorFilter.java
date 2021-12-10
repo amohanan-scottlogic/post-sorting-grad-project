@@ -4,12 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorFilter implements PostFilter {
+
+    String name;
+
+    public AuthorFilter (String criteria){
+        name = criteria;
+    }
     @Override
-    public List<UserPost> filter(List<UserPost> inputList, String criteria) {
+    public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
-        if(criteria==null) return filteredList;
+        if(name==null) return filteredList;
+
         for (UserPost userPost : inputList) {
-            if (userPost.getAuthor().toLowerCase().contains(criteria.toLowerCase())) filteredList.add(userPost);
+            String postName = userPost.getAuthor();
+            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(postName, name)) {filteredList.add(userPost);}
         }
         return filteredList;
     }
