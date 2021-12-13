@@ -41,4 +41,17 @@ public class ContentFilterTest {
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
+
+    @Test
+    public void filter_nullContent_correctListReturned() {
+        ContentFilter filterByKeyword = new ContentFilter("example");
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost(null);
+        UserPost userPost3 = createUserPost("Another example post.");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = filterByKeyword.filter(userPosts);
+        List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
+        Assert.assertEquals(actualResult, expectedResults);
+    }
 }

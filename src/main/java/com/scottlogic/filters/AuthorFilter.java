@@ -10,17 +10,25 @@ public class AuthorFilter implements PostFilter {
 
     String name;
 
-    public AuthorFilter (String criteria){
+    public AuthorFilter(String criteria) {
         name = criteria;
     }
+
     @Override
     public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
-        if(name==null) return filteredList;
-
+        List<UserPost> nullsRemoved = new ArrayList<>();
+        if (name == null) return filteredList;
         for (UserPost userPost : inputList) {
+            if (userPost.getAuthor() != null) {
+                nullsRemoved.add(userPost);
+            }
+        }
 
-            if(StringUtils.containsIgnoreCase(userPost.getAuthor(), name)) {filteredList.add(userPost);}
+        for (UserPost userPost : nullsRemoved) {
+            if (StringUtils.containsIgnoreCase(userPost.getAuthor(), name)) {
+                filteredList.add(userPost);
+            }
         }
         return filteredList;
     }

@@ -68,4 +68,17 @@ public class AuthorFilterTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
+    @Test
+    public void filter_nullNameInList_correctListReturned() {
+        AuthorFilter filterByAuthor = new AuthorFilter("JO");
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost(null);
+        UserPost userPost3 = createUserPost("Joe Bloggs");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = filterByAuthor.filter(userPosts);
+        List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
+        Assert.assertEquals(actualResult, expectedResults);
+    }
+
 }

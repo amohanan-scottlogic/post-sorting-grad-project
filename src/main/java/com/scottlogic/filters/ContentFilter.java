@@ -9,15 +9,23 @@ import java.util.List;
 public class ContentFilter implements PostFilter {
 
     String keyWord;
-    public ContentFilter (String criteria){
+
+    public ContentFilter(String criteria) {
         keyWord = criteria;
     }
+
     @Override
     public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
-        if(keyWord==null) return filteredList;
+        List<UserPost> nullsRemoved = new ArrayList<>();
+        if (keyWord == null) return filteredList;
         for (UserPost userPost : inputList) {
-            if(StringUtils.containsIgnoreCase(userPost.getContents(), keyWord)) {filteredList.add(userPost);}
+            if (userPost.getContents() != null) nullsRemoved.add(userPost);
+        }
+        for (UserPost userPost : nullsRemoved) {
+            if (StringUtils.containsIgnoreCase(userPost.getContents(), keyWord)) {
+                filteredList.add(userPost);
+            }
         }
         return filteredList;
     }
