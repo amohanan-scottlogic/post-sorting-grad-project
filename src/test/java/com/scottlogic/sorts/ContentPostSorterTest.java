@@ -1,5 +1,7 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
 
+import com.scottlogic.SortOrder;
+import com.scottlogic.UserPost;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,8 +29,8 @@ public class ContentPostSorterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost1);
-        Assert.assertEquals(actualResult, sorted);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
@@ -39,8 +41,8 @@ public class ContentPostSorterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList(userPost1, userPost3, userPost2);
-        Assert.assertEquals(actualResult, sorted);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
@@ -52,8 +54,8 @@ public class ContentPostSorterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
-        List<UserPost> sorted = Arrays.asList(userPost3, userPost2, userPost1, userPost4);
-        Assert.assertEquals(actualResult, sorted);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost1, userPost4);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test

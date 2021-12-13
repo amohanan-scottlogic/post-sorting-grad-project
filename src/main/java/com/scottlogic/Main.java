@@ -1,5 +1,7 @@
 package com.scottlogic;
 
+import com.scottlogic.sorts.AuthorPostSorter;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;

@@ -1,5 +1,6 @@
-package com.scottlogic;
+package com.scottlogic.filters;
 
+import com.scottlogic.UserPost;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

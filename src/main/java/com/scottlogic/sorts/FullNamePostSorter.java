@@ -1,4 +1,8 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
+
+import com.scottlogic.NullPostChecker;
+import com.scottlogic.SortOrder;
+import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +14,7 @@ public class FullNamePostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
-        NullPostChecker checkForNullPost = new NullPostChecker();
-        inputList = checkForNullPost.nullPostCheck(inputList);
+        inputList = NullPostChecker.nullPostCheck(inputList);
         List<UserPost> namesNull = new ArrayList<>();
         List<UserPost> namesSpace = new ArrayList<>();
         List<UserPost> remainingPosts = new ArrayList<>();

@@ -1,5 +1,8 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
 
+import com.scottlogic.SortOrder;
+import com.scottlogic.UserPost;
+import com.scottlogic.sorts.FullNamePostSorter;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,4 +1,8 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
+
+import com.scottlogic.NullPostChecker;
+import com.scottlogic.SortOrder;
+import com.scottlogic.UserPost;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,8 +16,7 @@ public class LikesPostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
-        NullPostChecker checkForNullPost = new NullPostChecker();
-        inputList = checkForNullPost.nullPostCheck(inputList);
+        inputList = NullPostChecker.nullPostCheck(inputList);
         switch (orderIn) {
 
             case ASC -> Collections.sort(inputList, Comparator.comparingInt(UserPost::getLikeCount));
