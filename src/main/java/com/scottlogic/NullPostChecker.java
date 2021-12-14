@@ -8,9 +8,9 @@ public  class NullPostChecker {
     public static List<UserPost> nullPostCheck(List<UserPost> inputList) {
 
         List<UserPost> postNotNull = new ArrayList<>();
-        for (int i = 0; i < inputList.size(); i++) {
-            if (inputList.get(i) != null) {
-                postNotNull.add(inputList.get(i));
+        for (UserPost userPost : inputList) {
+            if (userPost != null) {
+                postNotNull.add(userPost);
             }
         }
         return postNotNull;

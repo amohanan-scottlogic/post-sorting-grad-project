@@ -1,4 +1,4 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
 
 public enum SortOrder {
     ASC,

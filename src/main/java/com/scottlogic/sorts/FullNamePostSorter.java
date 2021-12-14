@@ -1,7 +1,6 @@
 package com.scottlogic.sorts;
 
 import com.scottlogic.NullPostChecker;
-import com.scottlogic.SortOrder;
 import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
@@ -14,12 +13,16 @@ public class FullNamePostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
-        inputList = NullPostChecker.nullPostCheck(inputList);
+        List<UserPost> listToBeSorted = new ArrayList<>();
+        if (inputList == null) {
+            return listToBeSorted;
+        }
+        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
         List<UserPost> namesNull = new ArrayList<>();
         List<UserPost> namesSpace = new ArrayList<>();
         List<UserPost> remainingPosts = new ArrayList<>();
 
-        for (UserPost userPost : inputList) {
+        for (UserPost userPost : listToBeSorted) {
             if (userPost.getAuthor() == null)
                 namesNull.add(userPost);
             else if (userPost.getAuthor().isBlank())
@@ -29,40 +32,28 @@ public class FullNamePostSorter implements PostSorter {
         }
         switch (orderIn) {
 
-            case ASC -> Collections.sort(remainingPosts, Comparator.comparing(UserPost::getAuthor, (name1, name2) -> {
+            case ASC -> Collections.sort(remainingPosts, FullName);
 
-                String[] splitName1 = nameSplit(name1);
-                String[] splitName2 = nameSplit(name2);
-                if (splitName1[1].compareTo(splitName2[1]) == 0) {
-                    if (splitName1[0].compareTo(splitName2[0]) == 0)
-                        return 0;
-                    else return  (splitName1[0].compareTo(splitName2[0]) > 0) ? 1 : -1;
-                }
-                else return  (splitName1[1].compareTo(splitName2[1]) > 0) ? 1 : -1;
-            }));
+            case DESC -> Collections.sort(remainingPosts, FullName.reversed());
 
-            case DESC -> Collections.sort(remainingPosts, Comparator.comparing(UserPost::getAuthor, (name1, name2) -> {
-
-                String[] splitName1 = nameSplit(name1);
-                String[] splitName2 = nameSplit(name2);
-                if (splitName1[1].compareTo(splitName2[1]) == 0) {
-                    if (splitName1[0].compareTo(splitName2[0]) == 0)
-                        return 0;
-                    else return  (splitName1[0].compareTo(splitName2[0]) > 0) ? -1 : 1;
-                }
-                else return  (splitName1[1].compareTo(splitName2[1]) > 0) ? -1 : 1;
-            }));
-        }
-        if (namesSpace != null) {
-            remainingPosts.addAll(namesSpace);
         }
         if (namesNull != null) {
             remainingPosts.addAll(namesNull);
         }
+        if (namesSpace != null) {
+            if (orderIn == SortOrder.ASC) {
+                namesSpace.addAll(remainingPosts);
+                return namesSpace;
+            } else {
+                remainingPosts.addAll(namesSpace);
+            }
+
+        }
+
         return remainingPosts;
     }
 
-    private String[] nameSplit(String name) {
+    public String[] nameSplit(String name) {
 
         String[] splitted = name.split(" ");
         String[] names = new String[2];
@@ -72,4 +63,19 @@ public class FullNamePostSorter implements PostSorter {
 
         return names;
     }
+
+    public Comparator<UserPost> FullName = (o1, o2) -> {
+        String[] splitName1 = nameSplit(o1.getAuthor());
+        String[] splitName2 = nameSplit(o2.getAuthor());
+        if (splitName1[1].compareTo(splitName2[1]) == 0) {
+            if (splitName1[0].compareTo(splitName2[0]) == 0) {
+                return 0;
+            } else {
+                return (splitName1[0].compareTo(splitName2[0]) > 0) ? 1 : -1;
+            }
+        } else {
+            return (splitName1[1].compareTo(splitName2[1]) > 0) ? 1 : -1;
+        }
+
+    };
 }

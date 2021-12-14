@@ -20,7 +20,7 @@ public class AuthorFilterTest {
     }
 
     @Test
-    public void filter_firstNameUppercase_correctListReturned() {
+    public void filter_firstNameUppercase_caseInsensitiveListReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("JOE");
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost("Joe Bloggs");
@@ -33,7 +33,7 @@ public class AuthorFilterTest {
     }
 
     @Test
-    public void filter_lastName_correctListReturned() {
+    public void filter_lastName_lastNameListReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("Blogg");
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost("Joe Bloggs");
@@ -57,7 +57,7 @@ public class AuthorFilterTest {
     }
 
     @Test
-    public void filter_spaceRequested_correctListReturned() {
+    public void filter_spaceRequested_allNamesWithSpaceReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter(" ");
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost("Joe Bloggs");
@@ -69,7 +69,7 @@ public class AuthorFilterTest {
     }
 
     @Test
-    public void filter_nullNameInList_correctListReturned() {
+    public void filter_nullNameInList_nullNotIncludedReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("JO");
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost(null);
@@ -79,6 +79,15 @@ public class AuthorFilterTest {
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
         Assert.assertEquals(actualResult, expectedResults);
+    }
+    @Test
+    public void filter_nameNotInList_emptyReturned() {
+        AuthorFilter filterByAuthor = new AuthorFilter("Jen");
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("May Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = filterByAuthor.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
     }
 
 }
