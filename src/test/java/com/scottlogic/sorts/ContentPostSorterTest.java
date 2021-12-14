@@ -1,6 +1,5 @@
 package com.scottlogic.sorts;
 
-import com.scottlogic.SortOrder;
 import com.scottlogic.UserPost;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,6 +80,7 @@ public class ContentPostSorterTest {
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
+
     @Test
     public void sort_mixedLengthPostsDesc_correctListReturned() {
         UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
@@ -127,6 +127,18 @@ public class ContentPostSorterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void sort_nullPostDesc_nullRemovedReturned() {
+        UserPost userPost1 = null;
+        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost3 = createUserPost("Hello World!");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
         Assert.assertEquals(actualResult, expectedResult);
     }
 }

@@ -1,7 +1,6 @@
 package com.scottlogic.sorts;
 
 import com.scottlogic.NullPostChecker;
-import com.scottlogic.SortOrder;
 import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
@@ -15,9 +14,11 @@ public class ContentPostSorter implements PostSorter {
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
         List<UserPost> contentNull = new ArrayList<>();
         List<UserPost> remainingPosts = new ArrayList<>();
-        inputList = NullPostChecker.nullPostCheck(inputList);
+        List<UserPost> listToBeSorted = new ArrayList<>();
+        if(inputList==null) {return remainingPosts;}
+        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
 
-        for (UserPost userPost : inputList) {
+        for (UserPost userPost : listToBeSorted) {
             if (userPost.getContents() == null)
                 contentNull.add(userPost);
             else

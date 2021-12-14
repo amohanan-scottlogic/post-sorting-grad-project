@@ -1,6 +1,5 @@
 package com.scottlogic.sorts;
 
-import com.scottlogic.SortOrder;
 import com.scottlogic.UserPost;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class DatePostSorterTest {
     }
 
     @Test
-    public void sort_mixedValidDatesAsc_correctListReturned() {
+    public void sort_mixedValidDatesAsc_sortedListReturned() {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
@@ -53,11 +52,12 @@ public class DatePostSorterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.ASC);
-        List<UserPost> expectedResult = Arrays.asList(userPost1,  userPost3, userPost2);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
+
     @Test
-    public void sort_mixedValidDatesDesc_correctListReturned() {
+    public void sort_mixedValidDatesDesc_sortedListReturned() {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
@@ -87,7 +87,7 @@ public class DatePostSorterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
-        List<UserPost> expectedResult = Arrays.asList( userPost3, userPost1, userPost2);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
 }

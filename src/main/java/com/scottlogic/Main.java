@@ -1,7 +1,5 @@
 package com.scottlogic;
 
-import com.scottlogic.sorts.AuthorPostSorter;
-
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -23,10 +21,7 @@ public class Main {
                 "An example of a post \nwith lines breaks.", 3);
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        AuthorPostSorter aps = new AuthorPostSorter();
-        aps.sort(userPosts, SortOrder.ASC);
         printAllUserPosts(userPosts);
-
     }
 
     /**

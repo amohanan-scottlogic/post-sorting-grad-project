@@ -1,5 +1,6 @@
 package com.scottlogic.filters;
 
+import com.scottlogic.NullPostChecker;
 import com.scottlogic.UserPost;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,8 +19,14 @@ public class ContentFilter implements PostFilter {
     public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
         List<UserPost> nullsRemoved = new ArrayList<>();
-        if (keyWord == null) return filteredList;
-        for (UserPost userPost : inputList) {
+        if (keyWord == null) {
+            return filteredList;
+        }
+        if(inputList==null) {
+            return filteredList;
+        }
+        List<UserPost> listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
+        for (UserPost userPost : listToBeFiltered) {
             if (userPost.getContents() != null) nullsRemoved.add(userPost);
         }
         for (UserPost userPost : nullsRemoved) {

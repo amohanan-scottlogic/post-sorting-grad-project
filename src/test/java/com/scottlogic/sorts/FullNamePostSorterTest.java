@@ -1,8 +1,6 @@
 package com.scottlogic.sorts;
 
-import com.scottlogic.SortOrder;
 import com.scottlogic.UserPost;
-import com.scottlogic.sorts.FullNamePostSorter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +21,7 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_mixedValidNames_correctListReturnedAsc() {
+    public void fullNameSorter_mixedValidNamesAsc_sortedListReturned() {
         UserPost userPost1 = createUserPost("Joe");
         UserPost userPost2 = createUserPost("Joe Bloggs");
         UserPost userPost3 = createUserPost("May Bloggs");
@@ -35,7 +33,7 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_spaceForLastName_correctListReturnedAsc() {
+    public void fullNameSorter_spaceForLastNameAsc_spaceComesFirstReturned() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost("Joe ");
         UserPost userPost3 = createUserPost("May Bloggs");
@@ -46,7 +44,7 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_nullForName_nullLastReturnedAsc() {
+    public void fullNameSorter_nullForNameAsc_nullLastReturned() {
         UserPost userPost1 = createUserPost(null);
         UserPost userPost2 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
@@ -56,8 +54,8 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_spaceForName_spaceFirstReturnedAsc() {
-        UserPost userPost1 = createUserPost("Joe ");
+    public void fullNameSorter_spaceForNameAsc_spaceFirstReturned() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost(" ");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
@@ -78,7 +76,18 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_mixedValidNames_correctListReturnedDesc() {
+    public void fullNameSorter_lastNameOnlyAsc_treatsFirstNameAsBlankReturned() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost(" Bloggs");
+        UserPost userPost3 = createUserPost("Zoey Space");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1, userPost3);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void fullNameSorter_mixedValidNamesDesc_sortedListReturned() {
         UserPost userPost1 = createUserPost("Joe");
         UserPost userPost2 = createUserPost("Joe Bloggs");
         UserPost userPost3 = createUserPost("May Bloggs");
@@ -90,12 +99,57 @@ public class FullNamePostSorterTest {
     }
 
     @Test
-    public void fullNameSorter_spaceForLastName_correctListReturnedDesc() {
+    public void fullNameSorter_spaceForLastNameDesc_spaceComesLastReturned() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("Joe ");
+        UserPost userPost3 = createUserPost("May Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void fullNameSorter_nullForNameDesc_nullLastReturned() {
+        UserPost userPost1 = createUserPost(null);
+        UserPost userPost2 = createUserPost("Joe Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void fullNameSorter_spaceForNameDesc_spaceLastReturned() {
         UserPost userPost1 = createUserPost("Joe ");
         UserPost userPost2 = createUserPost(" ");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
-        List<UserPost> expectedResult = Arrays.asList( userPost1, userPost2);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
+
+    @Test
+    public void fullNameSorter_middleNameDesc_ignoreMiddleNameReturned() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("Joe ");
+        UserPost userPost3 = createUserPost("Zoey Andy Space ");
+        UserPost userPost4 = createUserPost("Joe Tloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost4, userPost3, userPost1, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void fullNameSorter_lastNameOnlyDesc_treatsFirstNameAsBlankReturned() {
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost(" Bloggs");
+        UserPost userPost3 = createUserPost("Zoey Space");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
 }
