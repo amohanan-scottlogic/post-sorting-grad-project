@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +89,31 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void filter_nullList_emptyReturned() {
+        AuthorFilter filterByAuthor = new AuthorFilter("Jen");
+        List<UserPost> actualResult = filterByAuthor.filter(null);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void filter_nullPostInList_nullIgnored() {
+        AuthorFilter filterByAuthor = new AuthorFilter("May");
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("May Bloggs");
+        UserPost nullPost = null;
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> actualResult = filterByAuthor.filter(userPosts);
+        List<UserPost> expectedResult = Arrays.asList(userPost2);
+        Assert.assertEquals(actualResult, expectedResult    );
+    }
+    @Test
+    public void filter_emptyList_emptyListReturned() {
+        AuthorFilter filterByAuthor = new AuthorFilter("May");
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = filterByAuthor.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+
     }
 
 }

@@ -21,12 +21,10 @@ public class AuthorFilter implements PostFilter {
         List<UserPost> nullsRemoved = new ArrayList<>();
         List<UserPost> listToBeFiltered = new ArrayList<>();
 
-        if (name == null) {
+        if (name == null || inputList == null) {
             return filteredList;
         }
-        if(inputList==null) {
-            return filteredList;
-        }
+
         listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
         for (UserPost userPost : listToBeFiltered) {
             if (userPost.getAuthor() != null) {

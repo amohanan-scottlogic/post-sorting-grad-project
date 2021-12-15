@@ -37,19 +37,17 @@ public class FullNamePostSorter implements PostSorter {
             case DESC -> Collections.sort(remainingPosts, FullName.reversed());
 
         }
-        if (namesNull != null) {
+        if (!namesNull.isEmpty()) {
             remainingPosts.addAll(namesNull);
         }
-        if (namesSpace != null) {
+        if (!namesSpace.isEmpty()) {
             if (orderIn == SortOrder.ASC) {
                 namesSpace.addAll(remainingPosts);
                 return namesSpace;
             } else {
                 remainingPosts.addAll(namesSpace);
             }
-
         }
-
         return remainingPosts;
     }
 
