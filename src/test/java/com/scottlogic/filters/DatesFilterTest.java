@@ -39,7 +39,6 @@ public class DatesFilterTest {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
 
-
         DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), null);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> actualResult = filterByDates.filter(userPosts);
@@ -50,7 +49,6 @@ public class DatesFilterTest {
     public void filter_nullDatesList_nullRemovedReturned() {
         UserPost userPost1 = createUserPost(null);
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
-
 
         DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 12, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
@@ -64,7 +62,6 @@ public class DatesFilterTest {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(0000, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
-
 
         DatesFilter filterByDates = new DatesFilter(OffsetDateTime.MIN, OffsetDateTime.of(2020, 12, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
@@ -80,11 +77,40 @@ public class DatesFilterTest {
         UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
         UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
 
-
         DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(1800, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2800, 12, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
         List<UserPost> actualResult = filterByDates.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost4);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void filter_borderDatesMax_borderDatesIncludedReturned() {
+        UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
+        UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost5 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+
+        DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, userPost5);
+        List<UserPost> actualResult = filterByDates.filter(userPosts);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3, userPost5);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void filter_borderDatesMin_borderDatesIncludedReturnedSecondsIgnored() {
+        UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 4, 0, ZoneOffset.UTC));
+        UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 1, ZoneOffset.UTC));
+        UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost5 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+
+        DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, userPost5);
+        List<UserPost> actualResult = filterByDates.filter(userPosts);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3, userPost5);
         Assert.assertEquals(actualResult, expectedResult);
     }
 }

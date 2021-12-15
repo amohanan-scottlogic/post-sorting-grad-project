@@ -25,7 +25,7 @@ public class DatesFilter implements PostFilter {
         if (dateEnd == null || dateStart == null) {
             return filteredList;
         }
-        if(inputList==null) {
+        if (inputList == null) {
             return filteredList;
         }
         listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
