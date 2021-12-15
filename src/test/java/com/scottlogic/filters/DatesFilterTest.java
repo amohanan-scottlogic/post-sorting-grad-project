@@ -167,4 +167,5 @@ public class DatesFilterTest {
         filterByDates.filter(userPosts);
         Assert.assertEquals(userPostsCopy, userPosts);
     }
+
 }
