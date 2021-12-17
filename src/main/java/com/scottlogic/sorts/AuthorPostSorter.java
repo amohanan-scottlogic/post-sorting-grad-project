@@ -5,8 +5,9 @@ import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+import static java.util.Comparator.*;
 
 public class AuthorPostSorter implements PostSorter {
 
@@ -22,9 +23,9 @@ public class AuthorPostSorter implements PostSorter {
 
         switch (orderIn) {
 
-            case ASC -> Collections.sort(listToSort, Comparator.nullsLast(Comparator.comparing(UserPost::getAuthor, Comparator.nullsLast(Comparator.naturalOrder()))));
+            case ASC -> Collections.sort(listToSort,comparing(UserPost::getAuthor, nullsLast(naturalOrder())));
 
-            case DESC -> Collections.sort(listToSort, Collections.reverseOrder(Comparator.nullsLast(Comparator.comparing(UserPost::getAuthor, Comparator.nullsFirst(Comparator.naturalOrder())))));
+            case DESC -> Collections.sort(listToSort, Collections.reverseOrder(comparing(UserPost::getAuthor, nullsFirst(naturalOrder()))));
         }
         return listToSort;
     }

@@ -81,6 +81,7 @@ public class AuthorFilterTest {
         List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
         Assert.assertEquals(actualResult, expectedResults);
     }
+
     @Test
     public void filter_nameNotInList_emptyReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("Jen");
@@ -90,12 +91,14 @@ public class AuthorFilterTest {
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
+
     @Test
     public void filter_nullList_emptyReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("Jen");
         List<UserPost> actualResult = filterByAuthor.filter(null);
         Assert.assertTrue(actualResult.isEmpty());
     }
+
     @Test
     public void filter_nullPostInList_nullIgnored() {
         AuthorFilter filterByAuthor = new AuthorFilter("May");
@@ -105,15 +108,15 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
-        Assert.assertEquals(actualResult, expectedResult    );
+        Assert.assertEquals(actualResult, expectedResult);
     }
+
     @Test
     public void filter_emptyList_emptyListReturned() {
         AuthorFilter filterByAuthor = new AuthorFilter("May");
         List<UserPost> userPosts = new ArrayList<>();
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
-
     }
 
 }

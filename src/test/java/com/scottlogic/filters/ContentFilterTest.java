@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,5 +54,25 @@ public class ContentFilterTest {
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
         Assert.assertEquals(actualResult, expectedResults);
+    }
+
+    @Test
+    public void filter_nullPostInList_nullIgnored() {
+        ContentFilter filterByKeyword = new ContentFilter("post");
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("Another example post.");
+        UserPost nullPost = null;
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> actualResult = filterByKeyword.filter(userPosts);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void filter_emptyList_emptyListReturned() {
+        ContentFilter filterByKeyword = new ContentFilter("post");
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = filterByKeyword.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
     }
 }

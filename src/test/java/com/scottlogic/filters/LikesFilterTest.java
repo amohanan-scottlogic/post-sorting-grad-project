@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,5 +42,33 @@ public class LikesFilterTest {
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost3);
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void filter_nullPostInList_nullIgnored() {
+        LikesFilter filterByLikes = new LikesFilter();
+        UserPost userPost1 = createUserPost(2);
+        UserPost userPost2 = createUserPost(0);
+        UserPost nullPost = null;
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> actualResult = filterByLikes.filter(userPosts);
+        List<UserPost> expectedResult = Arrays.asList(userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void filter_emptyList_emptyListReturned() {
+        LikesFilter filterByLikes = new LikesFilter();
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = filterByLikes.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+
+    @Test
+    public void filter_nullList_emptyListReturned() {
+        LikesFilter filterByLikes = new LikesFilter();
+        List<UserPost> userPosts = null;
+        List<UserPost> actualResult = filterByLikes.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
     }
 }

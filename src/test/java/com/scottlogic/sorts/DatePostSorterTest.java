@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,6 +56,30 @@ public class DatePostSorterTest {
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
+    @Test
+    public void sort_nullPostAsc_nullIgnored() {
+        UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost2 = null;
+        UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+    @Test
+    public void sort_nullListAsc_emptyListReturned() {
+        List<UserPost> userPosts = null;
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.ASC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void sort_emptyListAsc_emptyListReturned() {
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.ASC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
 
     @Test
     public void sort_mixedValidDatesDesc_sortedListReturned() {
@@ -89,5 +114,29 @@ public class DatePostSorterTest {
         List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
+    }
+    @Test
+    public void sort_nullPostDesc_nullIgnored() {
+        UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost2 = null;
+        UserPost userPost3 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+    @Test
+    public void sort_nullListDesc_emptyListReturned() {
+        List<UserPost> userPosts = null;
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void sort_emptyListDesc_emptyListReturned() {
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
+        Assert.assertTrue(actualResult.isEmpty());
     }
 }

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +81,18 @@ public class ContentPostSorterTest {
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2);
         Assert.assertEquals(actualResult, expectedResult);
     }
+    @Test
+    public void sort_nullListAsc_emptyListReturned() {
+        List<UserPost> userPosts = null;
+        List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void sort_emptyListAsc_emptyListReturned() {
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
 
     @Test
     public void sort_mixedLengthPostsDesc_correctListReturned() {
@@ -141,4 +154,17 @@ public class ContentPostSorterTest {
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
         Assert.assertEquals(actualResult, expectedResult);
     }
+    @Test
+    public void sort_nullListDesc_emptyListReturned() {
+         List<UserPost> userPosts = null;
+        List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void sort_emptyListDesc_emptyListReturned() {
+        List<UserPost> userPosts = new ArrayList<>();
+        List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+
 }

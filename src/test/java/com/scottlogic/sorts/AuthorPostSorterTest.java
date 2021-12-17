@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +81,12 @@ public class AuthorPostSorterTest {
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
         Assert.assertTrue(actualResult.isEmpty());
     }
+    @Test
+    public void sort_emptyListAsc_emptyListReturned() {
+        List<UserPost> userPosts =new ArrayList<>();
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
 
     @Test
     public void sort_mixedValidNamesDesc_correctListReturned() {
@@ -133,5 +140,11 @@ public class AuthorPostSorterTest {
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3);
         Assert.assertEquals(actualResult, expectedResult);
+    }
+    @Test
+    public void sort_emptyListDesc_emptyListReturned() {
+        List<UserPost> userPosts =new ArrayList<>();
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        Assert.assertTrue(actualResult.isEmpty());
     }
 }
