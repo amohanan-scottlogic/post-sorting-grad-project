@@ -30,7 +30,7 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -78,8 +78,8 @@ public class AuthorFilterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
-        List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
-        Assert.assertEquals(actualResult, expectedResults);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -117,6 +117,17 @@ public class AuthorFilterTest {
         List<UserPost> userPosts = new ArrayList<>();
         List<UserPost> actualResult = filterByAuthor.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
+    }
+
+    @Test
+    public void filter_validInput_inputListNotMutated() {
+        AuthorFilter filterByAuthor = new AuthorFilter("May");
+        UserPost userPost1 = createUserPost("Joe Bloggs");
+        UserPost userPost2 = createUserPost("May Bloggs");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
+        filterByAuthor.filter(userPosts);
+        Assert.assertEquals(userPostsCopy, userPosts);
     }
 
 }

@@ -71,4 +71,16 @@ public class LikesFilterTest {
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
+
+    @Test
+    public void filter_validInput_inputListNotMutated() {
+        LikesFilter filterByLikes = new LikesFilter();
+        UserPost userPost1 = createUserPost(2);
+        UserPost userPost2 = createUserPost(0);
+        UserPost nullPost = null;
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2, nullPost);
+        filterByLikes.filter(userPosts);
+        Assert.assertEquals(userPostsCopy, userPosts);
+    }
 }

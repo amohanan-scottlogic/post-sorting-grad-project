@@ -29,7 +29,7 @@ public class ContentFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -52,8 +52,8 @@ public class ContentFilterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
-        List<UserPost> expectedResults = Arrays.asList(userPost1, userPost3);
-        Assert.assertEquals(actualResult, expectedResults);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ContentFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -74,5 +74,16 @@ public class ContentFilterTest {
         List<UserPost> userPosts = new ArrayList<>();
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
+    }
+
+    @Test
+    public void filter_validInput_inputListNotMutated() {
+        ContentFilter filterByKeyword = new ContentFilter("post");
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("Another example post.");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
+        filterByKeyword.filter(userPosts);
+        Assert.assertEquals(userPostsCopy, userPosts);
     }
 }
