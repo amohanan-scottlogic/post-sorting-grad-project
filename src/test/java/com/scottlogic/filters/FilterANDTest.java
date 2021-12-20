@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,6 +67,26 @@ public class FilterANDTest {
         List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
         Assert.assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void filter_nullList_EmptyReturned() {
+        List<UserPost> userPosts = null;
+        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
+        ContentFilter filterByContent = new ContentFilter("post");
+        FilterAND filteringAnd = new FilterAND(filterByAuthor,filterByContent);
+        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+
+    @Test
+    public void filter_emptyList_EmptyReturned() {
+        List<UserPost> userPosts = new ArrayList<>();
+        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
+        DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
+        FilterAND filteringAnd = new FilterAND(filterByDates, filterByAuthor);
+        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
 
     }
 }
