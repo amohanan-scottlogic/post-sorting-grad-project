@@ -47,14 +47,12 @@ public class ContentPostSorterTest {
 
     @Test
     public void sort_newLineSamePostsAsc_correctListReturned() {
-        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
-        UserPost userPost2 = createUserPost("An example of a post with lines breaks.");
-        UserPost userPost3 = createUserPost("Hello World!");
-        UserPost userPost4 = createUserPost("An example of a post without line breaks");
+        UserPost withNewLine = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost withoutNewLine = createUserPost("An example of a post with lines breaks.");
 
-        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> userPosts = Arrays.asList(withNewLine, withoutNewLine);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.ASC);
-        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost1, userPost4);
+        List<UserPost> expectedResult = Arrays.asList( withoutNewLine, withNewLine);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -132,14 +130,12 @@ public class ContentPostSorterTest {
 
     @Test
     public void sort_newLineSamePostsDesc_correctListReturned() {
-        UserPost userPost1 = createUserPost("An example of a post with lines breaks.");
-        UserPost userPost2 = createUserPost("An example of a post \nwith lines breaks.");
-        UserPost userPost3 = createUserPost("Hello World!");
-        UserPost userPost4 = createUserPost("An example of a post without line breaks");
+        UserPost withoutNewLine = createUserPost("An example of a post with lines breaks.");
+        UserPost withNewLine = createUserPost("An example of a post \nwith lines breaks.");
 
-        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+        List<UserPost> userPosts = Arrays.asList(withoutNewLine, withNewLine);
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
-        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost4, userPost1, userPost3);
+        List<UserPost> expectedResult = Arrays.asList(withNewLine, withoutNewLine);
         Assert.assertEquals(expectedResult, actualResult);
     }
 

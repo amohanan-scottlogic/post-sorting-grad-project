@@ -75,6 +75,22 @@ public class ContentFilterTest {
         List<UserPost> actualResult = filterByKeyword.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
+    @Test
+    public void filter_nullList_emptyListReturned() {
+        ContentFilter filterByKeyword = new ContentFilter("post");
+        List<UserPost> userPosts = null;
+        List<UserPost> actualResult = filterByKeyword.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+    @Test
+    public void filter_searchItemNotInList_emptyListReturned() {
+        ContentFilter filterByKeyword = new ContentFilter("cats");
+        UserPost userPost1 = createUserPost("An example of a post \nwith lines breaks.");
+        UserPost userPost2 = createUserPost("Another example post.");
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = filterByKeyword.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
 
     @Test
     public void filter_validInput_inputListNotMutated() {

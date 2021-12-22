@@ -23,7 +23,7 @@ public class AuthorPostSorter implements PostSorter {
 
         switch (orderIn) {
 
-            case ASC -> Collections.sort(listToSort,comparing(UserPost::getAuthor, nullsLast(naturalOrder())));
+            case ASC -> Collections.sort(listToSort, comparing(UserPost::getAuthor, nullsLast(naturalOrder())));
 
             case DESC -> Collections.sort(listToSort, Collections.reverseOrder(comparing(UserPost::getAuthor, nullsFirst(naturalOrder()))));
         }

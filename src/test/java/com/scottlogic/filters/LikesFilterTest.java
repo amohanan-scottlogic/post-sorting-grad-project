@@ -28,7 +28,7 @@ public class LikesFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3, userPost4);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class LikesFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost3);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class LikesFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost1);
-        Assert.assertEquals(actualResult, expectedResult);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test

@@ -57,6 +57,17 @@ public class DatesFilterTest {
     }
 
     @Test
+    public void filter_nullStartDateRequested_emptyListReturned() {
+        UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+
+        DatesFilter filterByDates = new DatesFilter(null, OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC));
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = filterByDates.filter(userPosts);
+        Assert.assertTrue(actualResult.isEmpty());
+    }
+
+    @Test
     public void filter_nullPost_nullIgnoredReturned() {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost2 = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));

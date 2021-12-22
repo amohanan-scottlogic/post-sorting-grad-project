@@ -63,6 +63,26 @@ public class AuthorPostSorterTest {
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
+    @Test
+    public void sort_upperCaseAsc_upperCaseFirstReturned() {
+        UserPost userPost1 = createUserPost("JOE Bloggs");
+        UserPost userPost2 = createUserPost("Joe Blogg");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+    @Test
+    public void sort_specialCharactersAsc_returnsAsPerNaturalOrder() {
+        UserPost userPost1 = createUserPost("Joe! Bloggs");
+        UserPost userPost2 = createUserPost("Joe. Blogg");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
 
     @Test
     public void sort_nullPostAsc_nullRemovedReturned() {
@@ -117,6 +137,26 @@ public class AuthorPostSorterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1);
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost1);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+    @Test
+    public void sort_upperCaseDesc_upperCaseFirstReturned() {
+        UserPost userPost1 = createUserPost("JOE Bloggs");
+        UserPost userPost2 = createUserPost("Joe Blogg");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+    @Test
+    public void sort_specialCharactersDesc_returnsAsPerNaturalOrder() {
+        UserPost userPost1 = createUserPost("Joe! Bloggs");
+        UserPost userPost2 = createUserPost("Joe. Blogg");
+
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
