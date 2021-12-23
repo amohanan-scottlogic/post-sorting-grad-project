@@ -9,6 +9,9 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class FilterORTest {
 
     @Test
@@ -30,7 +33,7 @@ public class FilterORTest {
         AuthorFilter filterByAuthor = new AuthorFilter("Jo");
         DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
         FilterOR filteringOR = new FilterOR(filterByDates, filterByAuthor);
-        List<UserPost> actualResult = filteringOR.filterOr(userPosts);
+        List<UserPost> actualResult = filteringOR.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
         Assert.assertEquals(actualResult, expectedResult);
     }
@@ -50,10 +53,12 @@ public class FilterORTest {
                 "An example of a post \nwith lines breaks.", 3);
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        ContentFilter filterByContent = new ContentFilter("exam");
-        LikesFilter filterByLikes = new LikesFilter();
-        FilterOR filteringOR = new FilterOR(filterByContent, filterByLikes);
-        List<UserPost> actualResult = filteringOR.filterOr(userPosts);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        LikesFilter filterByLikesMock = mock(LikesFilter.class);
+        when(filterByContentMock.filter(userPosts)).thenReturn(Arrays.asList(userPost2, userPost3));
+        when(filterByLikesMock.filter(userPosts)).thenReturn(Arrays.asList(userPost3));
+        FilterOR filteringOR = new FilterOR(filterByContentMock, filterByLikesMock);
+        List<UserPost> actualResult = filteringOR.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -73,10 +78,13 @@ public class FilterORTest {
                 "An example of a post \nwith lines breaks.", 3);
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        AuthorFilter filterByAuthor = new AuthorFilter("jo");
-        ContentFilter filterByContent = new ContentFilter(null);
-        FilterOR filteringOR = new FilterOR(filterByContent, filterByAuthor);
-        List<UserPost> actualResult = filteringOR.filterOr(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost2,userPost3));
+        when(filterByContentMock.filter(userPosts)).thenReturn(Arrays.asList());
+
+        FilterOR filteringOR = new FilterOR(filterByContentMock, filterByAuthorMock);
+        List<UserPost> actualResult = filteringOR.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
 
@@ -95,10 +103,13 @@ public class FilterORTest {
         UserPost userPost3 = null;
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        AuthorFilter filterByAuthor = new AuthorFilter("jo");
-        ContentFilter filterByContent = new ContentFilter("post");
-        FilterOR filteringOR = new FilterOR(filterByContent, filterByAuthor);
-        List<UserPost> actualResult = filteringOR.filterOr(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost2));
+        when(filterByContentMock.filter(userPosts)).thenReturn(Arrays.asList(userPost2));
+
+        FilterOR filteringOR = new FilterOR(filterByContentMock, filterByAuthorMock);
+        List<UserPost> actualResult = filteringOR.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
         Assert.assertEquals(expectedResult, actualResult);
 

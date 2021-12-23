@@ -3,6 +3,8 @@ package com.scottlogic.filters;
 import com.scottlogic.UserPost;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -10,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class FilterANDTest {
 
     UserPost userPost1 = new UserPost("Joe Bloggs",
@@ -26,45 +32,62 @@ public class FilterANDTest {
 
     List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
 
+
+
+
     @Test
     public void filter_authorANDDate_postsWithBothReturned() {
 
-        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
-        DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
-        FilterAND filteringAnd = new FilterAND(filterByDates, filterByAuthor);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        DatesFilter filterByDatesMock = mock(DatesFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost1, userPost2));
+        when(filterByDatesMock.filter(Arrays.asList(userPost1,userPost2))).thenReturn(Arrays.asList(userPost2));
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByDatesMock);
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
-        Assert.assertEquals(actualResult,expectedResult);
+        Assert.assertEquals(actualResult, expectedResult);
     }
+
     @Test
     public void filter_authorANDContent_postsWithBothReturned() {
 
-        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
-        ContentFilter filterByContent = new ContentFilter("example");
-        FilterAND filteringAnd = new FilterAND(filterByAuthor,filterByContent);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost1, userPost2,userPost3));
+        when(filterByContentMock.filter(userPosts)).thenReturn(Arrays.asList(userPost2,userPost3));
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByContentMock);
+
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
-        Assert.assertEquals(actualResult,expectedResult);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
     public void filter_nullANDAuthor_emptyListReturned() {
-        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
-        ContentFilter filterByContent = new ContentFilter(null);
-        FilterAND filteringAnd = new FilterAND(filterByAuthor,filterByContent);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost1, userPost2,userPost3));
+        when(filterByContentMock.filter(userPosts)).thenReturn(Arrays.asList());
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByContentMock);
+
+
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
+
     @Test
     public void filter_nullPosts_nullsRemoved() {
 
         UserPost userPost3 = null;
-
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        AuthorFilter filterByAuthor = new AuthorFilter("jo");
-        ContentFilter filterByContent = new ContentFilter("post");
-        FilterAND filteringAnd = new FilterAND(filterByContent, filterByAuthor);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList(userPost1, userPost2));
+        when(filterByContentMock.filter(Arrays.asList(userPost1,userPost2))).thenReturn(Arrays.asList(userPost2));
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByContentMock);
+
+
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         List<UserPost> expectedResult = Arrays.asList(userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -72,20 +95,25 @@ public class FilterANDTest {
     @Test
     public void filter_nullList_EmptyReturned() {
         List<UserPost> userPosts = null;
-        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
-        ContentFilter filterByContent = new ContentFilter("post");
-        FilterAND filteringAnd = new FilterAND(filterByAuthor,filterByContent);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        ContentFilter filterByContentMock = mock(ContentFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList());
+        when(filterByContentMock.filter(Arrays.asList())).thenReturn(Arrays.asList());
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByContentMock);
+
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
     }
 
     @Test
     public void filter_emptyList_EmptyReturned() {
         List<UserPost> userPosts = new ArrayList<>();
-        AuthorFilter filterByAuthor = new AuthorFilter("Jo");
-        DatesFilter filterByDates = new DatesFilter(OffsetDateTime.of(2020, 1, 1, 7, 12, 3, 0, ZoneOffset.UTC), OffsetDateTime.of(2020, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
-        FilterAND filteringAnd = new FilterAND(filterByDates, filterByAuthor);
-        List<UserPost> actualResult = filteringAnd.filterAnd(userPosts);
+        AuthorFilter filterByAuthorMock = mock(AuthorFilter.class);
+        DatesFilter filterByDateMock = mock(DatesFilter.class);
+        when(filterByAuthorMock.filter(userPosts)).thenReturn(Arrays.asList());
+        when(filterByDateMock.filter(Arrays.asList())).thenReturn(Arrays.asList());
+        FilterAND filteringAnd = new FilterAND(filterByAuthorMock, filterByDateMock);
+        List<UserPost> actualResult = filteringAnd.filter(userPosts);
         Assert.assertTrue(actualResult.isEmpty());
 
     }
