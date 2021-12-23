@@ -21,9 +21,9 @@ public class DatePostSorter implements PostSorter {
 
         switch (orderIn) {
 
-            case ASC -> Collections.sort(listToBeSorted, Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsLast(Comparator.naturalOrder()))));
+            case ASC -> listToBeSorted.sort(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsLast(Comparator.naturalOrder()))));
 
-            case DESC -> Collections.sort(listToBeSorted, Collections.reverseOrder(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsFirst(Comparator.naturalOrder())))));
+            case DESC -> listToBeSorted.sort( Collections.reverseOrder(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsFirst(Comparator.naturalOrder())))));
         }
         return listToBeSorted;
     }

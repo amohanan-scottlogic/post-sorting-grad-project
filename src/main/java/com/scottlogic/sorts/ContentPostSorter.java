@@ -25,8 +25,8 @@ public class ContentPostSorter implements PostSorter {
                 remainingPosts.add(userPost);
         }
         switch (orderIn) {
-            case ASC -> Collections.sort(remainingPosts, Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length())));
-            case DESC -> Collections.sort(remainingPosts, Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())));
+            case ASC -> remainingPosts.sort(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length())));
+            case DESC -> remainingPosts.sort(Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())));
         }
         if (!contentNull.isEmpty())
             remainingPosts.addAll(contentNull);

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthorFilter implements PostFilter {
 
@@ -31,12 +32,8 @@ public class AuthorFilter implements PostFilter {
                 nullsRemoved.add(userPost);
             }
         }
+        filteredList = nullsRemoved.stream().filter(post -> StringUtils.containsIgnoreCase(post.getAuthor(), name)).collect(Collectors.toList());
 
-        for (UserPost userPost : nullsRemoved) {
-            if (StringUtils.containsIgnoreCase(userPost.getAuthor(), name)) {
-                filteredList.add(userPost);
-            }
-        }
         return filteredList;
     }
 }

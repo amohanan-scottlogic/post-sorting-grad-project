@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContentFilter implements PostFilter {
 
@@ -29,11 +30,8 @@ public class ContentFilter implements PostFilter {
         for (UserPost userPost : listToBeFiltered) {
             if (userPost.getContents() != null) nullsRemoved.add(userPost);
         }
-        for (UserPost userPost : nullsRemoved) {
-            if (StringUtils.containsIgnoreCase(userPost.getContents(), keyWord)) {
-                filteredList.add(userPost);
-            }
-        }
+        filteredList = nullsRemoved.stream().filter(post -> StringUtils.containsIgnoreCase(post.getContents(), keyWord)).collect(Collectors.toList());
+
         return filteredList;
     }
 }
