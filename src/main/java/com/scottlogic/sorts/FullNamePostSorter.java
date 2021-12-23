@@ -4,9 +4,9 @@ import com.scottlogic.NullPostChecker;
 import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FullNamePostSorter implements PostSorter {
 
@@ -32,9 +32,9 @@ public class FullNamePostSorter implements PostSorter {
         }
         switch (orderIn) {
 
-            case ASC -> Collections.sort(remainingPosts, FullName);
+            case ASC -> remainingPosts = remainingPosts.stream().sorted(FullName).collect(Collectors.toList());
 
-            case DESC -> Collections.sort(remainingPosts, FullName.reversed());
+            case DESC -> remainingPosts = remainingPosts.stream().sorted(FullName.reversed()).collect(Collectors.toList());
 
         }
         if (!namesNull.isEmpty()) {

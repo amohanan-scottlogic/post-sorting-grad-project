@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ContentPostSorter implements PostSorter {
@@ -25,8 +26,8 @@ public class ContentPostSorter implements PostSorter {
                 remainingPosts.add(userPost);
         }
         switch (orderIn) {
-            case ASC -> remainingPosts.sort(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length())));
-            case DESC -> remainingPosts.sort(Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())));
+            case ASC -> remainingPosts = remainingPosts.stream().sorted(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length()))).collect(Collectors.toList());
+            case DESC -> remainingPosts = remainingPosts.stream().sorted((Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())))).collect(Collectors.toList());
         }
         if (!contentNull.isEmpty())
             remainingPosts.addAll(contentNull);
