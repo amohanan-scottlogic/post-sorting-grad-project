@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TopicSort {
     public TreeMap<String, List<UserPost>> topicMap = new TreeMap<>();
@@ -44,15 +46,14 @@ public class TopicSort {
 
     public String mainTopicFinder(String[] topics) {
 
-        HashMap<String, Integer> hs = new HashMap<String, Integer>();
-        for (int i = 0; i < topics.length; i++) {
-            if (hs.containsKey(topics[i])) {
-                hs.put(topics[i], hs.get(topics[i]) + 1);
-            } else {
-                hs.put(topics[i], 1);
-            }
-        }
-        Set<Map.Entry<String, Integer>> set = hs.entrySet();
+        List <String> list = Stream.of(topics).map(w -> w.split("\\s+")).flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+        Map <String, Integer > wordCounter = list.stream()
+                .collect(Collectors.toMap(w -> w.toLowerCase(), w -> 1, Integer::sum));
+
+
+        Set<Map.Entry<String, Integer>> set = wordCounter.entrySet();
         String key = "";
         int value = 0;
 
