@@ -30,7 +30,7 @@ public class SorterComboTest {
         AuthorPostSorter sortByAuthor = new AuthorPostSorter();
         DatePostSorter sortByDate = new DatePostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByAuthor, sortByDate);
-        List<UserPost> expectedResult = sortByBoth.sortCombo(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = sortByBoth.sort(userPosts, SortOrder.ASC);
         List<UserPost> actualResult = Arrays.asList(userPost3, userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -40,7 +40,7 @@ public class SorterComboTest {
         ContentPostSorter sortByContent = new ContentPostSorter();
         LikesPostSorter sortByLikes = new LikesPostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByContent, sortByLikes);
-        List<UserPost> expectedResult = sortByBoth.sortCombo(userPosts, SortOrder.ASC);
+        List<UserPost> expectedResult = sortByBoth.sort(userPosts, SortOrder.ASC);
         List<UserPost> actualResult = Arrays.asList(userPost1, userPost3, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -51,7 +51,7 @@ public class SorterComboTest {
         AuthorPostSorter sortByAuthor = new AuthorPostSorter();
         ContentPostSorter sortByContent = new ContentPostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByAuthor, sortByContent);
-        List<UserPost> expectedResult = sortByBoth.sortCombo(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = sortByBoth.sort(userPosts, SortOrder.DESC);
         List<UserPost> actualResult = Arrays.asList(userPost2, userPost1, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -62,7 +62,7 @@ public class SorterComboTest {
         AuthorPostSorter sortByAuthor = new AuthorPostSorter();
         ContentPostSorter sortByContent = new ContentPostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByAuthor, sortByContent);
-        List<UserPost> expectedResult = sortByBoth.sortCombo(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = sortByBoth.sort(userPosts, SortOrder.DESC);
         Assert.assertTrue(expectedResult.isEmpty());
     }
 
@@ -72,7 +72,7 @@ public class SorterComboTest {
         LikesPostSorter sortByLikes = new LikesPostSorter();
         ContentPostSorter sortByContent = new ContentPostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByLikes, sortByContent);
-        List<UserPost> expectedResult = sortByBoth.sortCombo(userPosts, SortOrder.DESC);
+        List<UserPost> expectedResult = sortByBoth.sort(userPosts, SortOrder.DESC);
         Assert.assertTrue(expectedResult.isEmpty());
     }
 
@@ -83,7 +83,7 @@ public class SorterComboTest {
         DatePostSorter sortByDate = new DatePostSorter();
         LikesPostSorter sortByLikes = new LikesPostSorter();
         SorterCombo sortByBoth = new SorterCombo(sortByLikes, sortByDate);
-        sortByBoth.sortCombo(userPosts, SortOrder.ASC);
+        sortByBoth.sort(userPosts, SortOrder.ASC);
         Assert.assertEquals(userPostsCopy, userPosts);
 
     }
