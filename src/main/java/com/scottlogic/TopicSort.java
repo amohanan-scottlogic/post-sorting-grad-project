@@ -22,12 +22,13 @@ public class TopicSort {
         File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
         List<String> stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
         TopicFinder findTopics = new TopicFinder(stopWords);
+
         for (UserPost userPost : inputList) {
             String[] topics = findTopics.topicFinder(userPost).split(" ");
             String mainTopic = mainTopicFinder(topics);
-            System.out.println(mainTopic);
             addToMap(mainTopic, userPost);
         }
+
         for (Map.Entry<String, List<UserPost>> entry : topicMap.entrySet()) {
             List<UserPost> tempUserPost = entry.getValue();
             List<UserPost> tempSortedUserPost = sortByFrequencyOfTopic.keywordSearchSort(tempUserPost, entry.getKey());
@@ -52,17 +53,11 @@ public class TopicSort {
         Map <String, Integer > wordCounter = list.stream()
                 .collect(Collectors.toMap(w -> w.toLowerCase(), w -> 1, Integer::sum));
 
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        wordCounter.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+        return sortedMap.entrySet().iterator().next().getKey();
 
-        Set<Map.Entry<String, Integer>> set = wordCounter.entrySet();
-        String key = "";
-        int value = 0;
-
-        for (Map.Entry<String, Integer> me : set) {
-            if (me.getValue() > value) {
-                value = me.getValue();
-                key = me.getKey();
-            }
-        }
-        return key;
     }
 }
