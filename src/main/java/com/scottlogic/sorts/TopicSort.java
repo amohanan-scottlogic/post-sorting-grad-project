@@ -1,6 +1,8 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
 
-import com.scottlogic.sorts.KeywordSearch;
+import com.scottlogic.NullPostChecker;
+import com.scottlogic.TopicFinder;
+import com.scottlogic.UserPost;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,48 +10,54 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class TopicSort {
-    public TreeMap<String, List<UserPost>> topicMap = new TreeMap<>();
-    List<UserPost> finalList = new ArrayList<>();
-    KeywordSearch sortByFrequencyOfTopic = new KeywordSearch();
+public class TopicSort implements PostSorter {
 
-    public List<UserPost> topicSorter(List<UserPost> inputList) throws IOException {
-        if(inputList==null) {
+    public TreeMap<String, List<UserPost>> topicMap = new TreeMap<>();
+    private List<UserPost> finalList = new ArrayList<>();
+
+    public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
+        if (inputList == null) {
             return finalList;
         }
+        List<UserPost> listToBeSorted = NullPostChecker.nullPostCheck(inputList);
+
         File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
-        List<String> stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
+        List<String> stopWords = null;
+        try {
+            stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         TopicFinder findTopics = new TopicFinder(stopWords);
-        for (UserPost userPost : inputList) {
-            String[] topics = findTopics.topicFinder(userPost).split(" ");
+        for (UserPost userPost : listToBeSorted) {
+            String[] topics = findTopics.findTopics(userPost).toArray(new String[0]);
             String mainTopic = mainTopicFinder(topics);
-            System.out.println(mainTopic);
             addToMap(mainTopic, userPost);
         }
         for (Map.Entry<String, List<UserPost>> entry : topicMap.entrySet()) {
             List<UserPost> tempUserPost = entry.getValue();
-            List<UserPost> tempSortedUserPost = sortByFrequencyOfTopic.keywordSearchSort(tempUserPost, entry.getKey());
-            Collections.reverse(tempSortedUserPost);
+            KeywordSort sortByFrequencyOfTopic = new KeywordSort(entry.getKey());
+            List<UserPost> tempSortedUserPost = sortByFrequencyOfTopic.sort(tempUserPost, orderIn);
             finalList.addAll(tempSortedUserPost);
         }
         return finalList;
     }
 
     private void addToMap(String mainTopic, UserPost userPost) {
-        if((!topicMap.containsKey(mainTopic))) {
+        if ((!topicMap.containsKey(mainTopic))) {
             topicMap.put(mainTopic, new ArrayList<UserPost>());
         }
         topicMap.get(mainTopic).add(userPost);
     }
 
-    public String mainTopicFinder(String[] topics) {
+    private String mainTopicFinder(String[] topics) {
 
         HashMap<String, Integer> hs = new HashMap<String, Integer>();
-        for (int i = 0; i < topics.length; i++) {
-            if (hs.containsKey(topics[i])) {
-                hs.put(topics[i], hs.get(topics[i]) + 1);
+        for (String topic : topics) {
+            if (hs.containsKey(topic)) {
+                hs.put(topic, hs.get(topic) + 1);
             } else {
-                hs.put(topics[i], 1);
+                hs.put(topic, 1);
             }
         }
         Set<Map.Entry<String, Integer>> set = hs.entrySet();
