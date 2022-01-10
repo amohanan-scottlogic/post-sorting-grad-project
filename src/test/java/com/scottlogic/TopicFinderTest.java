@@ -3,6 +3,8 @@ package com.scottlogic;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +25,7 @@ public class TopicFinderTest {
 
 
     private static List<String> stopWords;
+    private static TopicFinder topicFind;
 
     private UserPost createUserPost(String content) {
         return new UserPost("Joe Bloggs",
@@ -33,9 +37,10 @@ public class TopicFinderTest {
     public static void loadStopWords() throws IOException {
         File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
         stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
+        topicFind = new TopicFinder(stopWords);
     }
 
-    TopicFinder topicFind = new TopicFinder(stopWords);
+
 
     @ParameterizedTest
     @ValueSource(strings = {"An example of a post \nwith line breaks.", "An! example, of a post with line breaks","An! example, of a- post with line breaks"})
@@ -52,6 +57,26 @@ public class TopicFinderTest {
         assertEquals(expectedResult, actualResult);
     }
 
+    @ParameterizedTest
+    @MethodSource("provideContentForParameterizedTests")
+    public void topicFinder_parametersThroughMethod_stopWordsPunctuationRemoved(String content) throws IOException {
+        File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
+        stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
+        TopicFinder topicFind = new TopicFinder(stopWords);
+        UserPost userPost = createUserPost(content);
+
+        ArrayList<String> actualResult = topicFind.findTopics(userPost);
+        ArrayList<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
+
+        assertEquals(expectedResult, actualResult);
+    }
+    private static Stream<Arguments> provideContentForParameterizedTests() {
+        return Stream.of(
+          Arguments.of("An example of a post \nwith line breaks."),
+                Arguments.of("An! example, of a post with line breaks"),
+                Arguments.of("An! example, of a- post with line breaks")
+        );
+    }
     @Test
     public void topicFinder_nullPost_emptyStringReturned() {
 
