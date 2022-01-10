@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LikesFilterTest {
@@ -40,7 +41,7 @@ public class LikesFilterTest {
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
-        List<UserPost> expectedResult = Arrays.asList(userPost3);
+        List<UserPost> expectedResult = Collections.singletonList(userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -49,10 +50,9 @@ public class LikesFilterTest {
         LikesFilter filterByLikes = new LikesFilter();
         UserPost userPost1 = createUserPost(2);
         UserPost userPost2 = createUserPost(0);
-        UserPost nullPost = null;
-        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, null);
         List<UserPost> actualResult = filterByLikes.filter(userPosts);
-        List<UserPost> expectedResult = Arrays.asList(userPost1);
+        List<UserPost> expectedResult = Collections.singletonList(userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -67,8 +67,7 @@ public class LikesFilterTest {
     @Test
     public void filter_nullList_emptyListReturned() {
         LikesFilter filterByLikes = new LikesFilter();
-        List<UserPost> userPosts = null;
-        List<UserPost> actualResult = filterByLikes.filter(userPosts);
+        List<UserPost> actualResult = filterByLikes.filter(null);
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -77,9 +76,8 @@ public class LikesFilterTest {
         LikesFilter filterByLikes = new LikesFilter();
         UserPost userPost1 = createUserPost(2);
         UserPost userPost2 = createUserPost(0);
-        UserPost nullPost = null;
-        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, nullPost);
-        List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2, nullPost);
+        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, null);
+        List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2, null);
         filterByLikes.filter(userPosts);
         Assert.assertEquals(userPostsCopy, userPosts);
     }

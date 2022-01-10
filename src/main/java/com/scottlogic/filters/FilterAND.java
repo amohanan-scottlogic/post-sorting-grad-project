@@ -10,8 +10,8 @@ public class FilterAND implements PostFilter {
     PostFilter filterB;
 
     public FilterAND(PostFilter filterA, PostFilter filterB) {
-        this.filterA = filterA;
-        this.filterB = filterB;
+            this.filterA = filterA;
+            this.filterB = filterB;
     }
 
     public List<UserPost> filter(List<UserPost> inputList) {
