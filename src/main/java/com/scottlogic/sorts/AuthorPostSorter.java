@@ -4,12 +4,9 @@ import com.scottlogic.NullPostChecker;
 import com.scottlogic.UserPost;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.*;
 
 public class AuthorPostSorter implements PostSorter {
 
@@ -18,22 +15,31 @@ public class AuthorPostSorter implements PostSorter {
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
         List<UserPost> listToSort = new ArrayList<>();
-        List<UserPost> listSorted = new ArrayList<>();
+        List<UserPost> listSorted;
 
         if (inputList == null) {
             return listToSort;
         }
         listToSort = NullPostChecker.nullPostCheck(inputList);
 
+        listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
+                listToSort.stream().sorted(AuthorName).collect(Collectors.toList()) :
 
-        switch (orderIn) {
+                listToSort.stream().sorted(AuthorName.reversed()).collect(Collectors.toList());
 
-            case ASC -> listSorted = listToSort.stream().sorted(Comparator.nullsLast(Comparator.comparing(UserPost::getAuthor, nullsLast(naturalOrder())))).collect(Collectors.toList());
-
-
-            case DESC -> listSorted = listToSort.stream().sorted(Collections.reverseOrder(comparing(UserPost::getAuthor, nullsFirst(naturalOrder())))).collect(Collectors.toList());
-        }
 
         return listSorted;
     }
+
+    public Comparator<UserPost> AuthorName = (o1, o2) -> {
+        if (o1.getAuthor() == null)
+            return 1;
+        if (o2.getAuthor() == null)
+            return -1;
+        if (o1.getAuthor().compareTo(o2.getAuthor()) == 0) {
+            return 0;
+        } else {
+            return (o1.getAuthor().compareTo(o2.getAuthor()) > 0) ? 1 : -1;
+        }
+    };
 }

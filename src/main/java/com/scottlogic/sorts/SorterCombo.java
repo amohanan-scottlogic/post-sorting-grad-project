@@ -14,8 +14,8 @@ public class SorterCombo {
     }
 
     public List<UserPost> sortCombo (List<UserPost> inputList, SortOrder orderIn) {
-        List<UserPost> sortedBySortB = sorterB.sort(inputList, orderIn);
-        List<UserPost> sortedBySortA = sorterA.sort(sortedBySortB, orderIn);
+        List<UserPost> sortedBySortB = sorterB.sort(inputList, orderIn );
+        List<UserPost> sortedBySortA = sorterA.sort(sortedBySortB,orderIn );
         return sortedBySortA;
     }
 }

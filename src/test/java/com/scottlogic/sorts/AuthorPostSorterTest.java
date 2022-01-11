@@ -28,6 +28,7 @@ public class AuthorPostSorterTest {
         UserPost userPost3 = createUserPost("May Bloggs");
         UserPost userPost4 = createUserPost("Joe Blogg");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost4, userPost1, userPost2, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
@@ -37,7 +38,7 @@ public class AuthorPostSorterTest {
     public void authorSorter_oneObjectListAsc_oneObjectListReturned() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,  SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -48,7 +49,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost(null);
         UserPost userPost3 = createUserPost("May Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -59,7 +60,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe Blogg");
         UserPost userPost3 = createUserPost("");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,  SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -69,7 +70,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe Blogg");
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -79,7 +80,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe. Blogg");
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -90,7 +91,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = null;
         UserPost userPost3 = createUserPost("");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -98,14 +99,14 @@ public class AuthorPostSorterTest {
     @Test
     public void sort_nullListAsc_emptyListReturned() {
         List<UserPost> userPosts = null;
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,  SortOrder.ASC);
         Assert.assertTrue(actualResult.isEmpty());
     }
 
     @Test
     public void sort_emptyListAsc_emptyListReturned() {
         List<UserPost> userPosts = new ArrayList<>();
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC );
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -115,7 +116,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("May");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByAuthor.sort(userPosts, SortOrder.ASC);
+        sortByAuthor.sort(userPosts, SortOrder.ASC );
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 
@@ -135,7 +136,7 @@ public class AuthorPostSorterTest {
     public void sort_oneObjectListDesc_oneObjectListReturned() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -145,7 +146,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe Blogg");
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -155,19 +156,19 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe. Blogg");
 
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    public void sort_nullNamesDesc_returnNullLast() {
+    public void sort_nullNamesDesc_returnNullFirst() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost(null);
         UserPost userPost3 = createUserPost("May Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
-        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
+        List<UserPost> expectedResult = Arrays.asList(userPost2,userPost3, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -177,7 +178,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("Joe Blogg");
         UserPost userPost3 = createUserPost("");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -188,7 +189,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = null;
         UserPost userPost3 = createUserPost("");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -196,7 +197,7 @@ public class AuthorPostSorterTest {
     @Test
     public void sort_emptyListDesc_emptyListReturned() {
         List<UserPost> userPosts = new ArrayList<>();
-        List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -206,7 +207,7 @@ public class AuthorPostSorterTest {
         UserPost userPost2 = createUserPost("May");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByAuthor.sort(userPosts, SortOrder.DESC);
+        sortByAuthor.sort(userPosts,SortOrder.DESC );
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 }

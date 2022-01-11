@@ -3,10 +3,7 @@ package com.scottlogic.sorts;
 import com.scottlogic.NullPostChecker;
 import com.scottlogic.UserPost;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -25,10 +22,10 @@ public class ContentPostSorter implements PostSorter {
             else
                 remainingPosts.add(userPost);
         }
-        switch (orderIn) {
-            case ASC -> remainingPosts = remainingPosts.stream().sorted(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length()))).collect(Collectors.toList());
-            case DESC -> remainingPosts = remainingPosts.stream().sorted((Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())))).collect(Collectors.toList());
-        }
+        remainingPosts = (orderIn.compareTo(SortOrder.ASC)==0) ?
+            remainingPosts.stream().sorted(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length()))).collect(Collectors.toList()) :
+            remainingPosts.stream().sorted((Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())))).collect(Collectors.toList());
+
         if (!contentNull.isEmpty())
             remainingPosts.addAll(contentNull);
         return remainingPosts;

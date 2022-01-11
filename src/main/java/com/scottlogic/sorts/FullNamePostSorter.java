@@ -30,13 +30,13 @@ public class FullNamePostSorter implements PostSorter {
             else
                 remainingPosts.add(userPost);
         }
-        switch (orderIn) {
+        remainingPosts = (orderIn.compareTo(SortOrder.ASC) == 0) ?
 
-            case ASC -> remainingPosts = remainingPosts.stream().sorted(FullName).collect(Collectors.toList());
+                remainingPosts.stream().sorted(FullName).collect(Collectors.toList()) :
 
-            case DESC -> remainingPosts = remainingPosts.stream().sorted(FullName.reversed()).collect(Collectors.toList());
+                remainingPosts.stream().sorted(FullName.reversed()).collect(Collectors.toList());
 
-        }
+
         if (!namesNull.isEmpty()) {
             remainingPosts.addAll(namesNull);
         }

@@ -22,13 +22,14 @@ public class LikesPostSorter implements PostSorter {
             return listToBeSorted;
         }
         listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-        switch (orderIn) {
 
-            case ASC -> listToBeSorted = listToBeSorted.stream().sorted(Comparator.comparingInt(UserPost::getLikeCount)).collect(Collectors.toList());
+        List<UserPost> listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
 
-            case DESC -> listToBeSorted = listToBeSorted.stream().sorted(Collections.reverseOrder(comparing(UserPost::getLikeCount))).collect(Collectors.toList());
-        }
+                listToBeSorted.stream().sorted(Comparator.comparingInt(UserPost::getLikeCount)).collect(Collectors.toList()) :
 
-        return listToBeSorted;
+                listToBeSorted.stream().sorted(Collections.reverseOrder(comparing(UserPost::getLikeCount))).collect(Collectors.toList());
+
+
+        return listSorted;
     }
 }

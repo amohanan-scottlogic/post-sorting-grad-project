@@ -39,7 +39,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost("Joe ");
         UserPost userPost3 = createUserPost("May Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -49,7 +49,7 @@ public class FullNamePostSorterTest {
         UserPost userPost1 = createUserPost(null);
         UserPost userPost2 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -59,7 +59,7 @@ public class FullNamePostSorterTest {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost(" ");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -82,7 +82,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost(" Bloggs");
         UserPost userPost3 = createUserPost("Zoey Space");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.ASC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.ASC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1, userPost3);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -116,7 +116,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost("Joe Andy");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByFullName.sort(userPosts, SortOrder.ASC);
+        sortByFullName.sort(userPosts,SortOrder.ASC );
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 
@@ -138,7 +138,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost("Joe ");
         UserPost userPost3 = createUserPost("May Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -148,7 +148,7 @@ public class FullNamePostSorterTest {
         UserPost userPost1 = createUserPost(null);
         UserPost userPost2 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -170,7 +170,7 @@ public class FullNamePostSorterTest {
         UserPost userPost3 = createUserPost("Zoey B Space");
         UserPost userPost4 = createUserPost("Zoey A Space");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost4, userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -181,7 +181,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost(" Bloggs");
         UserPost userPost3 = createUserPost("Zoey Space");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByFullName.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByFullName.sort(userPosts,SortOrder.DESC );
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -205,7 +205,7 @@ public class FullNamePostSorterTest {
 
     @Test
     public void fullNameSorter_nullListDesc_emptyListReturned() {
-        List<UserPost> actualResult = sortByFullName.sort(null, SortOrder.DESC);
+        List<UserPost> actualResult = sortByFullName.sort(null,SortOrder.DESC );
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -215,7 +215,7 @@ public class FullNamePostSorterTest {
         UserPost userPost2 = createUserPost("Joe Andy");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByFullName.sort(userPosts, SortOrder.DESC);
+        sortByFullName.sort(userPosts,SortOrder.DESC );
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 

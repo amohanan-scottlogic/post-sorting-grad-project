@@ -20,12 +20,16 @@ public class DatePostSorter implements PostSorter {
         }
         listToBeSorted = NullPostChecker.nullPostCheck(inputList);
 
-        switch (orderIn) {
+        List<UserPost> listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
 
-            case ASC -> listToBeSorted = listToBeSorted.stream().sorted(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsLast(Comparator.naturalOrder())))).collect(Collectors.toList());
+                listToBeSorted.stream()
+                        .sorted(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsLast(Comparator.naturalOrder()))))
+                        .collect(Collectors.toList()) :
 
-            case DESC -> listToBeSorted = listToBeSorted.stream().sorted( Collections.reverseOrder(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsFirst(Comparator.naturalOrder()))))).collect(Collectors.toList());
-        }
-        return listToBeSorted;
+                listToBeSorted.stream()
+                        .sorted(Collections.reverseOrder(Comparator.nullsLast(Comparator.comparing(UserPost::getDateTime, Comparator.nullsFirst(Comparator.naturalOrder())))))
+                        .collect(Collectors.toList());
+
+        return listSorted;
     }
 }

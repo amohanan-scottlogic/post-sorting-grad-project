@@ -11,7 +11,7 @@ public class LikesFilter implements PostFilter {
     @Override
     public List<UserPost> filter(List<UserPost> inputList) {
 
-        List<UserPost> listToBeFiltered = new ArrayList<>();
+        List<UserPost> listToBeFiltered;
         List<UserPost> filteredList = new ArrayList<>();
         if (inputList == null) {
             return filteredList;
