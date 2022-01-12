@@ -2,6 +2,7 @@ package com.scottlogic;
 
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -42,21 +43,21 @@ public class TopicFinderTest {
 
     @ParameterizedTest
     @MethodSource("provideContentForParameterizedTests")
-    public void topicFinder_parametersThroughMethod_stopWordsPunctuationRemoved(String content)  {
+    public void topicFinder_parametersThroughMethod_stopWordsPunctuationRemoved(String content, List<String> expectedResult)  {
 
 
         UserPost userPost = createUserPost(content);
 
         List<String> actualResult = topicFind.findTopics(userPost);
-        List<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
 
         assertEquals(expectedResult, actualResult);
     }
-    private static Stream<String> provideContentForParameterizedTests() {
+    private static Stream<Arguments> provideContentForParameterizedTests() {
         return Stream.of(
-          "An example of a post \nwith line breaks.",
-                "An! example, of a post with line breaks",
-                "An! example, of a- post with line breaks"
+          Arguments.of("An example of a post \nwith line breaks.",Arrays.asList("example","post","line","breaks")),
+                Arguments.of("I love cats and dogs",Arrays.asList("love","cats","dogs")),
+                Arguments.of("I and this",Arrays.asList())
+
         );
     }
     @Test

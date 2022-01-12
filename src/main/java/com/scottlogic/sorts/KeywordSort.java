@@ -6,11 +6,13 @@ import com.scottlogic.filters.ContentFilter;
 import java.util.*;
 
 public class KeywordSort implements PostSorter {
-    String keyWord;
+    private String keyWord;
+
     public KeywordSort (String keyWord) {
         this.keyWord = keyWord;
     }
 
+    @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
         TreeMap<Integer, UserPost> sortedMap = new TreeMap<>();
@@ -19,25 +21,40 @@ public class KeywordSort implements PostSorter {
 
         List<UserPost> listToBeSorted = filterByKeyWord.filter(inputList);
         int[] count = new int[listToBeSorted.size()];
-        for (int i = 0; i < listToBeSorted.size(); i++) {
-            String content = listToBeSorted.get(i).getContents();
-            count[i] = 0;
-            String[] words = content.split(" ");
 
-            for (int j = 0; j < words.length; j++) {
-                if (words[j].compareToIgnoreCase(keyWord) == 0) {
-                    count[i]++;
-                }
-            }
+        for (int i = 0; i < listToBeSorted.size(); i++) {
+
+            String[] words = splitContent(listToBeSorted.get(i));
+            count[i] = checkForCountOfKeyWordInContent(words);
             sortedMap.put(count[i], listToBeSorted.get(i));
         }
-        for (Map.Entry<Integer, UserPost> entry : sortedMap.entrySet()) {
-           UserPost unsortedList =  entry.getValue();
-           finalList.add(unsortedList);
+
+        for ( UserPost userPost: sortedMap.values()) {
+            finalList.add(userPost);
         }
+
         if(orderIn==SortOrder.DESC) {
             Collections.reverse(finalList);
         }
+
         return finalList;
+    }
+
+    private int checkForCountOfKeyWordInContent(String[] words) {
+
+        int keyWordCount=0;
+        for (String word : words) {
+            if (word.contains(keyWord)) {
+                keyWordCount++;
+            }
+        }
+        return keyWordCount;
+    }
+
+    private String[] splitContent(UserPost userPost) {
+
+        String content = userPost.getContents();
+
+        return content.toLowerCase().split(" ");
     }
 }

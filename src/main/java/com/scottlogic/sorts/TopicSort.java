@@ -9,31 +9,24 @@ import java.util.*;
 public class TopicSort implements PostSorter {
 
     public TreeMap<String, List<UserPost>> topicMap = new TreeMap<>();
-    private List<UserPost> finalList = new ArrayList<>();
+    private final List<UserPost> finalList = new ArrayList<>();
 
+    @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
         if (inputList == null) {
             return finalList;
         }
         List<UserPost> listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-        /*String filePath = "../../../resources/English_StopWords.txt";
-        File file = new File(filePath);
-        System.out.println(filePath);
-        List<String> stopWords = null;
-        try {
-            stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
         TopicFinder findTopics = new TopicFinder();
         for (UserPost userPost : listToBeSorted) {
-            String[] topics = findTopics.findTopics(userPost).toArray(new String[0]);
+            List<String> topics = findTopics.findTopics(userPost);
             String mainTopic = mainTopicFinder(topics);
             addToMap(mainTopic, userPost);
         }
-        for (Map.Entry<String, List<UserPost>> entry : topicMap.entrySet()) {
-            List<UserPost> tempUserPost = entry.getValue();
-            KeywordSort sortByFrequencyOfTopic = new KeywordSort(entry.getKey());
+        for (String key : topicMap.keySet()) {
+            List<UserPost> tempUserPost = topicMap.get(key);
+            KeywordSort sortByFrequencyOfTopic = new KeywordSort(key);
             List<UserPost> tempSortedUserPost = sortByFrequencyOfTopic.sort(tempUserPost, orderIn);
             finalList.addAll(tempSortedUserPost);
         }
@@ -41,32 +34,32 @@ public class TopicSort implements PostSorter {
     }
 
     private void addToMap(String mainTopic, UserPost userPost) {
-        if ((!topicMap.containsKey(mainTopic))) {
-            topicMap.put(mainTopic, new ArrayList<UserPost>());
+
+        if (!mainTopic.isEmpty()) {
+            topicMap.putIfAbsent(mainTopic, new ArrayList<>());
+            topicMap.get(mainTopic).add(userPost);
         }
-        topicMap.get(mainTopic).add(userPost);
     }
 
-    private String mainTopicFinder(String[] topics) {
+    private String mainTopicFinder(List<String> topics) {
 
-        HashMap<String, Integer> hs = new HashMap<String, Integer>();
+        Map<String, Integer> allTopicMap = new HashMap<>();
         for (String topic : topics) {
-            if (hs.containsKey(topic)) {
-                hs.put(topic, hs.get(topic) + 1);
-            } else {
-                hs.put(topic, 1);
-            }
+
+            allTopicMap.putIfAbsent(topic, 0);
+            allTopicMap.computeIfPresent(topic, (topicName, count) -> count + 1);
         }
-        Set<Map.Entry<String, Integer>> set = hs.entrySet();
-        String key = "";
+
+
+        String mainTopic = "";
         int value = 0;
 
-        for (Map.Entry<String, Integer> me : set) {
-            if (me.getValue() > value) {
-                value = me.getValue();
-                key = me.getKey();
+        for (String key : allTopicMap.keySet()) {
+            if (allTopicMap.get(key) > value) {
+                value = allTopicMap.get(key);
+                mainTopic = key;
             }
         }
-        return key;
+        return mainTopic;
     }
 }
