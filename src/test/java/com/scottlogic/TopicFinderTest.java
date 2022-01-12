@@ -1,16 +1,10 @@
 package com.scottlogic;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -23,64 +17,62 @@ import static org.junit.Assert.assertTrue;
 
 public class TopicFinderTest {
 
-
-    private static List<String> stopWords;
-    private static TopicFinder topicFind;
-
     private UserPost createUserPost(String content) {
         return new UserPost("Joe Bloggs",
                 OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC),
                 content, 2);
     }
 
-    @BeforeClass
-    public static void loadStopWords() throws IOException {
-        File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
-        stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
-        topicFind = new TopicFinder(stopWords);
-    }
 
+
+    TopicFinder topicFind = new TopicFinder();
 
 
     @ParameterizedTest
     @ValueSource(strings = {"An example of a post \nwith line breaks.", "An! example, of a post with line breaks","An! example, of a- post with line breaks"})
-    public void topicFinder_generalPostParameterized_stopWordsPunctuationRemoved(String content) throws IOException {
+    public void topicFinder_generalPostParameterized_stopWordsPunctuationRemoved(String content)  {
 
-        File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
-        stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
-        TopicFinder topicFind = new TopicFinder(stopWords);
         UserPost userPost = createUserPost(content);
 
-        ArrayList<String> actualResult = topicFind.findTopics(userPost);
-        ArrayList<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
+        List<String> actualResult = topicFind.findTopics(userPost);
+        List<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
 
         assertEquals(expectedResult, actualResult);
     }
 
     @ParameterizedTest
     @MethodSource("provideContentForParameterizedTests")
-    public void topicFinder_parametersThroughMethod_stopWordsPunctuationRemoved(String content) throws IOException {
-        File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
-        stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
-        TopicFinder topicFind = new TopicFinder(stopWords);
+    public void topicFinder_parametersThroughMethod_stopWordsPunctuationRemoved(String content)  {
+
+
         UserPost userPost = createUserPost(content);
 
-        ArrayList<String> actualResult = topicFind.findTopics(userPost);
-        ArrayList<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
+        List<String> actualResult = topicFind.findTopics(userPost);
+        List<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
 
         assertEquals(expectedResult, actualResult);
     }
-    private static Stream<Arguments> provideContentForParameterizedTests() {
+    private static Stream<String> provideContentForParameterizedTests() {
         return Stream.of(
-          Arguments.of("An example of a post \nwith line breaks."),
-                Arguments.of("An! example, of a post with line breaks"),
-                Arguments.of("An! example, of a- post with line breaks")
+          "An example of a post \nwith line breaks.",
+                "An! example, of a post with line breaks",
+                "An! example, of a- post with line breaks"
         );
+    }
+    @Test
+    public void topicFinder_validPost_emptyStringReturned() {
+
+        UserPost userPost = createUserPost("An example of a post \nwith line breaks.");
+
+        List<String> actualResult = topicFind.findTopics(userPost);
+        List<String> expectedResult = new ArrayList<String>(Arrays.asList("example", "post", "line", "breaks"));
+
+        assertEquals(expectedResult,actualResult);
     }
     @Test
     public void topicFinder_nullPost_emptyStringReturned() {
 
-        ArrayList<String> actualResult = topicFind.findTopics(null);
+        List<String> actualResult = topicFind.findTopics(null);
 
         assertTrue(actualResult.isEmpty());
     }
@@ -90,7 +82,7 @@ public class TopicFinderTest {
 
         UserPost userPost = createUserPost("");
 
-        ArrayList<String> actualResult = topicFind.findTopics(userPost);
+        List<String> actualResult = topicFind.findTopics(userPost);
 
         assertTrue(actualResult.isEmpty());
     }
@@ -99,7 +91,7 @@ public class TopicFinderTest {
 
         UserPost userPost = createUserPost(null);
 
-        ArrayList<String> actualResult = topicFind.findTopics(userPost);
+        List<String> actualResult = topicFind.findTopics(userPost);
 
         assertTrue(actualResult.isEmpty());
     }

@@ -4,10 +4,6 @@ import com.scottlogic.NullPostChecker;
 import com.scottlogic.TopicFinder;
 import com.scottlogic.UserPost;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class TopicSort implements PostSorter {
@@ -20,15 +16,16 @@ public class TopicSort implements PostSorter {
             return finalList;
         }
         List<UserPost> listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-
-        File file = new File("C:/Dev/post-sorting-grad-project/src/main/resources/English_StopWords.txt");
+        /*String filePath = "../../../resources/English_StopWords.txt";
+        File file = new File(filePath);
+        System.out.println(filePath);
         List<String> stopWords = null;
         try {
             stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        TopicFinder findTopics = new TopicFinder(stopWords);
+        }*/
+        TopicFinder findTopics = new TopicFinder();
         for (UserPost userPost : listToBeSorted) {
             String[] topics = findTopics.findTopics(userPost).toArray(new String[0]);
             String mainTopic = mainTopicFinder(topics);

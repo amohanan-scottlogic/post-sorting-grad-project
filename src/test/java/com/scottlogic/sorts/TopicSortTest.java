@@ -1,7 +1,6 @@
-package com.scottlogic;
+package com.scottlogic.sorts;
 
-import com.scottlogic.sorts.SortOrder;
-import com.scottlogic.sorts.TopicSort;
+import com.scottlogic.UserPost;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TopicSortTest {
     TopicSort sortByTopicFrequency = new TopicSort();
