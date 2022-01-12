@@ -18,7 +18,9 @@ public class LikesFilter implements PostFilter {
         }
         listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
 
-        filteredList = listToBeFiltered.stream().filter(post -> (post.getLikeCount() > 0)).collect(Collectors.toList());
+        filteredList = listToBeFiltered.stream()
+                .filter(post -> (post.getLikeCount() > 0))
+                .collect(Collectors.toList());
 
         return filteredList;
     }

@@ -162,13 +162,13 @@ public class AuthorPostSorterTest {
     }
 
     @Test
-    public void sort_nullNamesDesc_returnNullFirst() {
+    public void sort_nullNamesDesc_returnNullLast() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost2 = createUserPost(null);
         UserPost userPost3 = createUserPost("May Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
         List<UserPost> actualResult = sortByAuthor.sort(userPosts,SortOrder.DESC );
-        List<UserPost> expectedResult = Arrays.asList(userPost2,userPost3, userPost1);
+        List<UserPost> expectedResult = Arrays.asList(userPost3, userPost1, userPost2);
         Assert.assertEquals(expectedResult, actualResult);
     }
 

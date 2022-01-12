@@ -10,24 +10,36 @@ import java.util.stream.Collectors;
 public class ContentPostSorter implements PostSorter {
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
-        List<UserPost> contentNull = new ArrayList<>();
         List<UserPost> remainingPosts = new ArrayList<>();
-        List<UserPost> listToBeSorted = new ArrayList<>();
-        if(inputList==null) {return remainingPosts;}
-        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
+        List<UserPost> listToSort;
 
-        for (UserPost userPost : listToBeSorted) {
-            if (userPost.getContents() == null)
-                contentNull.add(userPost);
-            else
-                remainingPosts.add(userPost);
+        if (inputList == null) {
+            return remainingPosts;
         }
-        remainingPosts = (orderIn.compareTo(SortOrder.ASC)==0) ?
-            remainingPosts.stream().sorted(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length()))).collect(Collectors.toList()) :
-            remainingPosts.stream().sorted((Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())))).collect(Collectors.toList());
 
-        if (!contentNull.isEmpty())
+        listToSort = NullPostChecker.nullPostCheck(inputList);
+        List<UserPost> contentNull = listToSort.stream().filter(post -> post.getContents() == null).collect(Collectors.toList());
+        List<UserPost> contentNonNull = listToSort.stream().filter(post -> post.getContents() != null).collect(Collectors.toList());
+
+
+        remainingPosts = (orderIn.compareTo(SortOrder.ASC) == 0) ?
+                contentNonNull.stream().sorted(ContentLength).collect(Collectors.toList()) :
+                contentNonNull.stream().sorted(ContentLength.reversed()).collect(Collectors.toList());
+
+        if (!contentNull.isEmpty()) {
             remainingPosts.addAll(contentNull);
+        }
         return remainingPosts;
+    }
+
+    public Comparator<UserPost> ContentLength = (u1,u2) -> contentSort(u1,u2);
+
+    private int contentSort (UserPost u1, UserPost u2) {
+        if(u1.getContents().length()==u2.getContents().length()) {
+            return 0;
+        }
+        else {
+            return u1.getContents().length()>u2.getContents().length() ? 1 : -1;
+        }
     }
 }

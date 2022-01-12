@@ -22,24 +22,28 @@ public class AuthorPostSorter implements PostSorter {
         }
         listToSort = NullPostChecker.nullPostCheck(inputList);
 
+        List<UserPost> nullsInList = listToSort.stream().filter(post -> post.getAuthor() == null).collect(Collectors.toList());
+        List<UserPost> nonNullAuthorList = listToSort.stream().filter(post -> post.getAuthor() != null).collect(Collectors.toList());
+
         listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
-                listToSort.stream().sorted(AuthorName).collect(Collectors.toList()) :
+                nonNullAuthorList.stream().sorted(AuthorName).collect(Collectors.toList()) :
 
-                listToSort.stream().sorted(AuthorName.reversed()).collect(Collectors.toList());
+                nonNullAuthorList.stream().sorted(AuthorName.reversed()).collect(Collectors.toList());
 
-
+        if (!nullsInList.isEmpty()) {
+            listSorted.addAll(nullsInList);
+        }
         return listSorted;
     }
 
-    public Comparator<UserPost> AuthorName = (o1, o2) -> {
-        if (o1.getAuthor() == null)
-            return 1;
-        if (o2.getAuthor() == null)
-            return -1;
+    public Comparator<UserPost> AuthorName = (o1, o2) -> authorSort(o1,o2);
+
+    private int authorSort(UserPost o1, UserPost o2) {
+
         if (o1.getAuthor().compareTo(o2.getAuthor()) == 0) {
             return 0;
         } else {
             return (o1.getAuthor().compareTo(o2.getAuthor()) > 0) ? 1 : -1;
         }
-    };
+    }
 }

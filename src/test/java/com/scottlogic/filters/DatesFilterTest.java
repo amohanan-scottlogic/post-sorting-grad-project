@@ -8,7 +8,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -120,7 +119,7 @@ public class DatesFilterTest {
     }
 
     @Test
-    public void filter_borderDatesMax_borderDatesNotIncludedReturned() {
+    public void filter_borderDatesMax_borderDatesIncludedReturned() {
         OffsetDateTime maxDate = OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC);
 
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
@@ -134,12 +133,12 @@ public class DatesFilterTest {
                 maxDate);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, containsMaxDate);
         List<UserPost> actualResult = filterByDates.filter(userPosts);
-        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3);
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3,containsMaxDate);
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    public void filter_borderDatesMin_borderDatesNotIncludedReturnedSecondsNotIgnored() {
+    public void filter_borderDatesMin_borderDatesIncludedReturnedSecondsNotIgnored() {
         OffsetDateTime minDate = OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC);
 
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
@@ -148,10 +147,10 @@ public class DatesFilterTest {
         UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost5 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
 
-        DatesFilter filterByDates = new DatesFilter(minDate, OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+        DatesFilter filterByDates = new DatesFilter(minDate, OffsetDateTime.of(2020, 12, 30, 7, 12, 3, 0, ZoneOffset.UTC));
         List<UserPost> userPosts = Arrays.asList(userPost1, minDatePlusSeconds, hasMinDate, userPost4, userPost5);
         List<UserPost> actualResult = filterByDates.filter(userPosts);
-        List<UserPost> expectedResult = Collections.singletonList(minDatePlusSeconds);
+        List<UserPost> expectedResult = Arrays.asList(minDatePlusSeconds,hasMinDate);
         Assert.assertEquals(expectedResult, actualResult);
     }
 

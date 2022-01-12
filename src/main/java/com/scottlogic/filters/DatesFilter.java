@@ -29,9 +29,10 @@ public class DatesFilter implements PostFilter {
 
         listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
 
-        filteredList = listToBeFiltered.stream().filter(Objects::nonNull)
-                .filter(post -> post.getDateTime().isAfter(dateStart))
-                .filter(post -> post.getDateTime().isBefore(dateEnd))
+        filteredList = listToBeFiltered.stream()
+                .filter(Objects::nonNull)
+                .filter(post -> !post.getDateTime().isBefore(dateStart))
+                .filter(post -> !post.getDateTime().isAfter(dateEnd))
                 .collect(Collectors.toList());
 
         return filteredList;

@@ -24,7 +24,8 @@ public class AuthorFilter implements PostFilter {
             return filteredList;
         }
 
-        filteredList = inputList.stream().filter(Objects::nonNull)
+        filteredList = inputList.stream()
+                .filter(Objects::nonNull)
                 .filter(post -> StringUtils.containsIgnoreCase(post.getAuthor(), name))
                 .collect(Collectors.toList());
 

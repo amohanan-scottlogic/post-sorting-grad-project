@@ -20,14 +20,14 @@ public class ContentFilter implements PostFilter {
     @Override
     public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
-        List<UserPost> nullsRemoved = new ArrayList<>();
         if (keyWord == null || inputList == null) {
             return filteredList;
         }
 
         List<UserPost> listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
 
-        filteredList = listToBeFiltered.stream().filter(Objects::nonNull)
+        filteredList = listToBeFiltered.stream()
+                .filter(Objects::nonNull)
                 .filter(post -> StringUtils.containsIgnoreCase(post.getContents(), keyWord))
                 .collect(Collectors.toList());
 
