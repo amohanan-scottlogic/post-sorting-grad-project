@@ -23,11 +23,9 @@ public class LikesPostSorter implements PostSorter {
         }
         listToBeSorted = NullPostChecker.nullPostCheck(inputList);
 
-        List<UserPost> listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
-
-                listToBeSorted.stream().sorted(Comparator.comparingInt(UserPost::getLikeCount)).collect(Collectors.toList()) :
-
-                listToBeSorted.stream().sorted(Collections.reverseOrder(comparing(UserPost::getLikeCount))).collect(Collectors.toList());
+        List<UserPost> listSorted = listToBeSorted.stream()
+                .sorted(orderIn.isAscending() ? Comparator.comparingInt(UserPost::getLikeCount) : Collections.reverseOrder(comparing(UserPost::getLikeCount)))
+                .collect(Collectors.toList());
 
 
         return listSorted;

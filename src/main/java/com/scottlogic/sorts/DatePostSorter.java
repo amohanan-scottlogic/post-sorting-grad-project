@@ -21,25 +21,20 @@ public class DatePostSorter implements PostSorter {
         List<UserPost> nullsInList = listToBeSorted.stream().filter(post -> post.getDateTime() == null).collect(Collectors.toList());
         List<UserPost> datesNonNull = listToBeSorted.stream().filter(post -> post.getDateTime() != null).collect(Collectors.toList());
 
-        List<UserPost> listSorted = (orderIn.compareTo(SortOrder.ASC) == 0) ?
+        List<UserPost> listSorted = datesNonNull.stream().sorted(orderIn.isAscending() ? PostDate : PostDate.reversed()).collect(Collectors.toList());
 
-                datesNonNull.stream().sorted(PostDate).collect(Collectors.toList()) :
-
-                datesNonNull.stream().sorted(PostDate.reversed()).collect(Collectors.toList());
-
-        if (!nullsInList.isEmpty()){
+        if (!nullsInList.isEmpty()) {
             listSorted.addAll(nullsInList);
         }
         return listSorted;
     }
 
-    public Comparator<UserPost> PostDate = (u1,u2) -> dateSort(u1,u2);
+    public Comparator<UserPost> PostDate = (u1, u2) -> dateSort(u1, u2);
 
-    private int dateSort (UserPost u1, UserPost u2) {
-        if(u1.getDateTime() == u2.getDateTime()) {
+    private int dateSort(UserPost u1, UserPost u2) {
+        if (u1.getDateTime() == u2.getDateTime()) {
             return 0;
-        }
-        else {
+        } else {
             return u1.getDateTime().isAfter(u2.getDateTime()) ? 1 : -1;
         }
     }

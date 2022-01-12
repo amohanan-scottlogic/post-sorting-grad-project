@@ -22,9 +22,9 @@ public class ContentPostSorter implements PostSorter {
         List<UserPost> contentNonNull = listToSort.stream().filter(post -> post.getContents() != null).collect(Collectors.toList());
 
 
-        remainingPosts = (orderIn.compareTo(SortOrder.ASC) == 0) ?
-                contentNonNull.stream().sorted(ContentLength).collect(Collectors.toList()) :
-                contentNonNull.stream().sorted(ContentLength.reversed()).collect(Collectors.toList());
+        remainingPosts = contentNonNull.stream()
+                .sorted(orderIn.isAscending() ? ContentLength : ContentLength.reversed())
+                .collect(Collectors.toList());
 
         if (!contentNull.isEmpty()) {
             remainingPosts.addAll(contentNull);
@@ -32,14 +32,13 @@ public class ContentPostSorter implements PostSorter {
         return remainingPosts;
     }
 
-    public Comparator<UserPost> ContentLength = (u1,u2) -> contentSort(u1,u2);
+    public Comparator<UserPost> ContentLength = (u1, u2) -> contentSort(u1, u2);
 
-    private int contentSort (UserPost u1, UserPost u2) {
-        if(u1.getContents().length()==u2.getContents().length()) {
+    private int contentSort(UserPost u1, UserPost u2) {
+        if (u1.getContents().length() == u2.getContents().length()) {
             return 0;
-        }
-        else {
-            return u1.getContents().length()>u2.getContents().length() ? 1 : -1;
+        } else {
+            return u1.getContents().length() > u2.getContents().length() ? 1 : -1;
         }
     }
 }
