@@ -17,19 +17,22 @@ public class DatePostSorter implements PostSorter {
         if (inputList == null) {
             return listToBeSorted;
         }
+
         listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-        List<UserPost> nullsInList = listToBeSorted.stream().filter(post -> post.getDateTime() == null).collect(Collectors.toList());
-        List<UserPost> datesNonNull = listToBeSorted.stream().filter(post -> post.getDateTime() != null).collect(Collectors.toList());
 
-        List<UserPost> listSorted = datesNonNull.stream().sorted(orderIn.isAscending() ? PostDate : PostDate.reversed()).collect(Collectors.toList());
+        List<UserPost> listSorted = listToBeSorted.stream()
+                .filter(post -> post.getDateTime() != null)
+                .sorted(orderIn.isAscending() ? PostDate : PostDate.reversed())
+                .collect(Collectors.toList());
 
-        if (!nullsInList.isEmpty()) {
+        if (listSorted.size() != listToBeSorted.size()) {
+            List<UserPost> nullsInList = listToBeSorted.stream().filter(post -> post.getDateTime() == null).toList();
             listSorted.addAll(nullsInList);
         }
         return listSorted;
     }
 
-    public Comparator<UserPost> PostDate = (u1, u2) -> dateSort(u1, u2);
+    public Comparator<UserPost> PostDate = this::dateSort;
 
     private int dateSort(UserPost u1, UserPost u2) {
         if (u1.getDateTime() == u2.getDateTime()) {

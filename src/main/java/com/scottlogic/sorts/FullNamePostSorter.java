@@ -14,38 +14,53 @@ public class FullNamePostSorter implements PostSorter {
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
         List<UserPost> listToBeSorted = new ArrayList<>();
+
         if (inputList == null) {
             return listToBeSorted;
         }
-        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-        List<UserPost> namesNull = new ArrayList<>();
-        List<UserPost> namesSpace = new ArrayList<>();
-        List<UserPost> remainingPosts = new ArrayList<>();
 
-        for (UserPost userPost : listToBeSorted) {
-            if (userPost.getAuthor() == null)
-                namesNull.add(userPost);
-            else if (userPost.getAuthor().isBlank())
-                namesSpace.add(userPost);
-            else
-                remainingPosts.add(userPost);
-        }
-        remainingPosts = remainingPosts.stream()
+        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
+
+        List<UserPost> listSorted = listToBeSorted.stream()
+                .filter(post -> post.getAuthor() != null)
+                .filter(post -> !post.getAuthor().isBlank())
                 .sorted(orderIn.isAscending() ? FullName : FullName.reversed())
                 .collect(Collectors.toList());
 
-        if (!namesNull.isEmpty()) {
-            remainingPosts.addAll(namesNull);
-        }
-        if (!namesSpace.isEmpty()) {
-            if (orderIn == SortOrder.ASC) {
-                namesSpace.addAll(remainingPosts);
-                return namesSpace;
-            } else {
-                remainingPosts.addAll(namesSpace);
+        if (listSorted.size() != listToBeSorted.size()) {
+            List<UserPost> namesNull = listToBeSorted.stream().filter(post -> post.getAuthor() == null).toList();
+            listSorted.addAll(namesNull);
+
+            if (listSorted.size() != listToBeSorted.size()) {
+                List<UserPost> namesBlank = listToBeSorted.stream().filter(post -> post.getAuthor().isBlank()).collect(Collectors.toList());
+
+                if (orderIn.isAscending()) {
+                    namesBlank.addAll(listSorted);
+                    return namesBlank;
+                } else {
+                    listSorted.addAll(namesBlank);
+                    return listSorted;
+                }
             }
         }
-        return remainingPosts;
+
+        return listSorted;
+    }
+
+    public Comparator<UserPost> FullName = this::fullNameSort;
+
+    private int fullNameSort(UserPost u1, UserPost u2) {
+        String[] splitName1 = nameSplit(u1.getAuthor());
+        String[] splitName2 = nameSplit(u2.getAuthor());
+        if (splitName1[1].compareTo(splitName2[1]) == 0) {
+            if (splitName1[0].compareTo(splitName2[0]) == 0) {
+                return 0;
+            } else {
+                return (splitName1[0].compareTo(splitName2[0]) > 0) ? 1 : -1;
+            }
+        } else {
+            return (splitName1[1].compareTo(splitName2[1]) > 0) ? 1 : -1;
+        }
     }
 
     public String[] nameSplit(String name) {
@@ -58,19 +73,4 @@ public class FullNamePostSorter implements PostSorter {
 
         return names;
     }
-
-    public Comparator<UserPost> FullName = (o1, o2) -> {
-        String[] splitName1 = nameSplit(o1.getAuthor());
-        String[] splitName2 = nameSplit(o2.getAuthor());
-        if (splitName1[1].compareTo(splitName2[1]) == 0) {
-            if (splitName1[0].compareTo(splitName2[0]) == 0) {
-                return 0;
-            } else {
-                return (splitName1[0].compareTo(splitName2[0]) > 0) ? 1 : -1;
-            }
-        } else {
-            return (splitName1[1].compareTo(splitName2[1]) > 0) ? 1 : -1;
-        }
-
-    };
 }

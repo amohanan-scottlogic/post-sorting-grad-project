@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 public class AuthorPostSorter implements PostSorter {
 
 
+
+
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
@@ -22,20 +24,20 @@ public class AuthorPostSorter implements PostSorter {
         }
         listToSort = NullPostChecker.nullPostCheck(inputList);
 
-        List<UserPost> nullsInList = listToSort.stream().filter(post -> post.getAuthor() == null).collect(Collectors.toList());
-        List<UserPost> nonNullAuthorList = listToSort.stream().filter(post -> post.getAuthor() != null).collect(Collectors.toList());
-
-        listSorted = nonNullAuthorList.stream()
+        listSorted = listToSort.stream()
+                .filter(post -> post.getAuthor() != null)
                 .sorted(orderIn.isAscending() ? AuthorName : AuthorName.reversed())
                 .collect(Collectors.toList());
 
-        if (!nullsInList.isEmpty()) {
+        if (listSorted.size() != listToSort.size()) {
+            List<UserPost> nullsInList = listToSort.stream().filter(post -> post.getAuthor() == null).toList();
             listSorted.addAll(nullsInList);
         }
+
         return listSorted;
     }
 
-    public Comparator<UserPost> AuthorName = (o1, o2) -> authorSort(o1, o2);
+    public Comparator<UserPost> AuthorName = this::authorSort;
 
     private int authorSort(UserPost o1, UserPost o2) {
 

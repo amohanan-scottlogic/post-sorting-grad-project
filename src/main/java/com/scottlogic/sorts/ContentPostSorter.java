@@ -8,31 +8,32 @@ import java.util.stream.Collectors;
 
 
 public class ContentPostSorter implements PostSorter {
+
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
-        List<UserPost> remainingPosts = new ArrayList<>();
+        List<UserPost> listSorted = new ArrayList<>();
         List<UserPost> listToSort;
 
         if (inputList == null) {
-            return remainingPosts;
+            return listSorted;
         }
 
         listToSort = NullPostChecker.nullPostCheck(inputList);
-        List<UserPost> contentNull = listToSort.stream().filter(post -> post.getContents() == null).collect(Collectors.toList());
-        List<UserPost> contentNonNull = listToSort.stream().filter(post -> post.getContents() != null).collect(Collectors.toList());
 
-
-        remainingPosts = contentNonNull.stream()
+        listSorted = listToSort.stream()
+                .filter(post -> post.getContents() != null)
                 .sorted(orderIn.isAscending() ? ContentLength : ContentLength.reversed())
                 .collect(Collectors.toList());
 
-        if (!contentNull.isEmpty()) {
-            remainingPosts.addAll(contentNull);
+        if (listSorted.size() != listToSort.size()) {
+
+            List<UserPost> nullsInList = listToSort.stream().filter(post -> post.getContents() == null).toList();
+            listSorted.addAll(nullsInList);
         }
-        return remainingPosts;
+        return listSorted;
     }
 
-    public Comparator<UserPost> ContentLength = (u1, u2) -> contentSort(u1, u2);
+    public Comparator<UserPost> ContentLength = this::contentSort;
 
     private int contentSort(UserPost u1, UserPost u2) {
         if (u1.getContents().length() == u2.getContents().length()) {
