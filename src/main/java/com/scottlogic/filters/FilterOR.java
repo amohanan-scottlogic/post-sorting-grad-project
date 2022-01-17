@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class FilterOR {
+public class FilterOR implements PostFilter{
     PostFilter filterA;
     PostFilter filterB;
 
@@ -16,7 +16,7 @@ public class FilterOR {
         this.filterB = filterB;
     }
 
-    public List<UserPost> filterOr(List<UserPost> inputList) {
+    public List<UserPost> filter(List<UserPost> inputList) {
 
         List<UserPost> listFiltered = filterA.filter(inputList);
         List<UserPost> listFilteredB = filterB.filter(inputList);

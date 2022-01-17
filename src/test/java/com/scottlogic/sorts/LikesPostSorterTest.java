@@ -28,8 +28,10 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.ASC );
+
+        List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2, userPost4, userPost1);
+
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -40,33 +42,38 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(-1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.ASC );
+
+        List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost4, userPost3, userPost2, userPost1);
+
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void sort_nullPostsAsc_nullRemovedReturned() {
-        UserPost userPost1 = null;
         UserPost userPost2 = createUserPost(0);
         UserPost userPost3 = createUserPost(-1);
-        List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.ASC );
+        List<UserPost> userPosts = Arrays.asList(null, userPost2, userPost3);
+
+        List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.ASC);
         List<UserPost> expectedResult = Arrays.asList(userPost3, userPost2);
+
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void sort_nullListAsc_emptyListReturned() {
-        List<UserPost> userPosts = null;
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.ASC );
+
+        List<UserPost> actualResult = sortByLikes.sort(null, SortOrder.ASC);
+
         Assert.assertTrue(actualResult.isEmpty());
     }
 
     @Test
     public void sortemptyListAsc_emptyListReturned() {
-        List<UserPost> userPosts = new ArrayList<>();
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.ASC );
+
+        List<UserPost> actualResult = sortByLikes.sort(new ArrayList<>(), SortOrder.ASC);
+
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -76,7 +83,9 @@ public class LikesPostSorterTest {
         UserPost userPost2 = createUserPost(0);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByLikes.sort(userPosts,SortOrder.ASC );
+
+        sortByLikes.sort(userPosts, SortOrder.ASC);
+
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 
@@ -88,8 +97,10 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(0);
         UserPost userPost4 = createUserPost(1);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
+
         List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
+
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -100,22 +111,25 @@ public class LikesPostSorterTest {
         UserPost userPost3 = createUserPost(-1);
         UserPost userPost4 = createUserPost(0);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4);
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.DESC );
+
+        List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost1, userPost2, userPost4, userPost3);
+
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void sort_nullListDesc_emptyListReturned() {
-        List<UserPost> userPosts = null;
-        List<UserPost> actualResult = sortByLikes.sort(userPosts, SortOrder.DESC);
+        List<UserPost> actualResult = sortByLikes.sort(null, SortOrder.DESC);
+
         Assert.assertTrue(actualResult.isEmpty());
     }
 
     @Test
     public void sort_emptyListDesc_emptyListReturned() {
-        List<UserPost> userPosts = new ArrayList<>();
-        List<UserPost> actualResult = sortByLikes.sort(userPosts,SortOrder.DESC );
+
+        List<UserPost> actualResult = sortByLikes.sort(new ArrayList<>(), SortOrder.DESC);
+
         Assert.assertTrue(actualResult.isEmpty());
     }
 
@@ -125,7 +139,9 @@ public class LikesPostSorterTest {
         UserPost userPost2 = createUserPost(0);
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2);
         List<UserPost> userPostsCopy = Arrays.asList(userPost1, userPost2);
-        sortByLikes.sort(userPosts,SortOrder.DESC );
+
+        sortByLikes.sort(userPosts, SortOrder.DESC);
+
         Assert.assertEquals(userPostsCopy, userPosts);
     }
 }
