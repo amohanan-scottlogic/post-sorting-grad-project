@@ -3,35 +3,44 @@ package com.scottlogic.sorts;
 import com.scottlogic.NullPostChecker;
 import com.scottlogic.UserPost;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class ContentPostSorter implements PostSorter {
+
     @Override
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
-        List<UserPost> contentNull = new ArrayList<>();
-        List<UserPost> remainingPosts = new ArrayList<>();
-        List<UserPost> listToBeSorted;
-        if (inputList == null) {
-            return remainingPosts;
-        }
-        listToBeSorted = NullPostChecker.nullPostCheck(inputList);
 
-        for (UserPost userPost : listToBeSorted) {
-            if (userPost.getContents() == null)
-                contentNull.add(userPost);
-            else
-                remainingPosts.add(userPost);
+        List<UserPost> listSorted = new ArrayList<>();
+        List<UserPost> listToSort;
+
+        if (inputList == null) {
+            return listSorted;
         }
-        switch (orderIn) {
-            case ASC -> remainingPosts.sort(Comparator.nullsFirst(Comparator.comparing(post -> post.getContents().length())));
-            case DESC -> remainingPosts.sort(Collections.reverseOrder(Comparator.comparing(post -> post.getContents().length())));
+
+        listToSort = NullPostChecker.nullPostCheck(inputList);
+
+        listSorted = listToSort.stream()
+                .filter(post -> post.getContents() != null)
+                .sorted(orderIn.isAscending() ? ContentLength : ContentLength.reversed())
+                .collect(Collectors.toList());
+
+        if (listSorted.size() != listToSort.size()) {
+
+            List<UserPost> nullsInList = listToSort.stream().filter(post -> post.getContents() == null).toList();
+            listSorted.addAll(nullsInList);
         }
-        if (!contentNull.isEmpty())
-            remainingPosts.addAll(contentNull);
-        return remainingPosts;
+        return listSorted;
+    }
+
+    public Comparator<UserPost> ContentLength = this::contentSort;
+
+    private int contentSort(UserPost u1, UserPost u2) {
+        if (u1.getContents().length() == u2.getContents().length()) {
+            return 0;
+        } else {
+            return u1.getContents().length() > u2.getContents().length() ? 1 : -1;
+        }
     }
 }

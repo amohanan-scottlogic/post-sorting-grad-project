@@ -120,6 +120,7 @@ public class AuthorPostSorterTest {
     public void sort_emptyListAsc_emptyListReturned() {
         List<UserPost> userPosts = new ArrayList<>();
 
+
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.ASC);
 
         Assert.assertTrue(actualResult.isEmpty());
@@ -155,6 +156,7 @@ public class AuthorPostSorterTest {
     public void sort_oneObjectListDesc_oneObjectListReturned() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         List<UserPost> userPosts = Arrays.asList(userPost1);
+
 
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost1);
@@ -214,6 +216,7 @@ public class AuthorPostSorterTest {
     public void sort_nullPostDesc_nullRemovedReturned() {
         UserPost userPost1 = createUserPost("Joe Bloggs");
         UserPost userPost3 = createUserPost("");
+
         List<UserPost> userPosts = Arrays.asList(userPost1, null, userPost3);
 
         List<UserPost> actualResult = sortByAuthor.sort(userPosts, SortOrder.DESC);

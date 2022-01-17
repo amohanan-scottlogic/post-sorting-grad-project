@@ -135,25 +135,38 @@ public class DatesFilterTest {
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3, userPost4, containsMaxDate);
 
         List<UserPost> actualResult = filterByDates.filter(userPosts);
+<<<<<<< HEAD
+        List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3,containsMaxDate);
+=======
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost3, containsMaxDate);
 
+>>>>>>> main
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    public void filter_borderDatesMin_borderDatesIncludedReturnedSecondsIgnored() {
+    public void filter_borderDatesMin_borderDatesIncludedReturnedSecondsNotIgnored() {
         OffsetDateTime minDate = OffsetDateTime.of(2020, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC);
         UserPost userPost1 = createUserPost(OffsetDateTime.of(20, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost minDatePlusSeconds = createUserPost(OffsetDateTime.of(2020, 1, 3, 7, 12, 4, 0, ZoneOffset.UTC));
         UserPost hasMinDate = createUserPost(minDate);
-        UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+        UserPost userPost4 = createUserPost(OffsetDateTime.of(2012, 1, 4, 7, 12, 3, 0, ZoneOffset.UTC));
         UserPost userPost5 = createUserPost(OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+<<<<<<< HEAD
+
+        DatesFilter filterByDates = new DatesFilter(minDate, OffsetDateTime.of(2020, 12, 30, 7, 12, 3, 0, ZoneOffset.UTC));
+=======
         DatesFilter filterByDates = new DatesFilter(minDate, OffsetDateTime.of(2020, 12, 31, 7, 12, 3, 0, ZoneOffset.UTC));
+>>>>>>> main
         List<UserPost> userPosts = Arrays.asList(userPost1, minDatePlusSeconds, hasMinDate, userPost4, userPost5);
 
         List<UserPost> actualResult = filterByDates.filter(userPosts);
+<<<<<<< HEAD
+        List<UserPost> expectedResult = Arrays.asList(minDatePlusSeconds,hasMinDate);
+=======
         List<UserPost> expectedResult = Arrays.asList(minDatePlusSeconds, hasMinDate, userPost5);
 
+>>>>>>> main
         Assert.assertEquals(expectedResult, actualResult);
     }
 
