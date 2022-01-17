@@ -63,6 +63,7 @@ public class LikesPostSorterTest {
 
     @Test
     public void sort_nullListAsc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByLikes.sort(null, SortOrder.ASC);
 
         Assert.assertTrue(actualResult.isEmpty());
@@ -70,6 +71,7 @@ public class LikesPostSorterTest {
 
     @Test
     public void sortemptyListAsc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByLikes.sort(new ArrayList<>(), SortOrder.ASC);
 
         Assert.assertTrue(actualResult.isEmpty());
@@ -125,6 +127,7 @@ public class LikesPostSorterTest {
 
     @Test
     public void sort_emptyListDesc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByLikes.sort(new ArrayList<>(), SortOrder.DESC);
 
         Assert.assertTrue(actualResult.isEmpty());

@@ -1,5 +1,6 @@
 package com.scottlogic.sorts;
 
+
 public enum SortOrder {
     ASC,
     DESC;
@@ -7,6 +8,6 @@ public enum SortOrder {
     public boolean isAscending() {
         return this == ASC;
     }
-};
 
+};
 

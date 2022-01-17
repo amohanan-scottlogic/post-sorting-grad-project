@@ -6,6 +6,8 @@ import com.scottlogic.UserPost;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DatesFilter implements PostFilter {
 
@@ -19,25 +21,20 @@ public class DatesFilter implements PostFilter {
     @Override
     public List<UserPost> filter(List<UserPost> inputList) {
         List<UserPost> filteredList = new ArrayList<>();
-        List<UserPost> nullsRemoved = new ArrayList<>();
-        List<UserPost> listToBeFiltered = new ArrayList<>();
+        List<UserPost> listToBeFiltered;
 
-        if (dateEnd == null || dateStart == null) {
+        if (dateEnd == null || dateStart == null || inputList == null) {
             return filteredList;
         }
-        if (inputList == null) {
-            return filteredList;
-        }
+
         listToBeFiltered = NullPostChecker.nullPostCheck(inputList);
-        for (UserPost userPost : listToBeFiltered) {
-            if (userPost.getDateTime() != null) nullsRemoved.add(userPost);
-        }
 
-        for (UserPost userPost : nullsRemoved) {
-            if (userPost.getDateTime().compareTo(dateStart) >= 0 && userPost.getDateTime().compareTo(dateEnd) <= 0) {
-                filteredList.add(userPost);
-            }
-        }
+        filteredList = listToBeFiltered.stream()
+                .filter(Objects::nonNull)
+                .filter(post -> !post.getDateTime().isBefore(dateStart))
+                .filter(post -> !post.getDateTime().isAfter(dateEnd))
+                .collect(Collectors.toList());
+
         return filteredList;
     }
 }
