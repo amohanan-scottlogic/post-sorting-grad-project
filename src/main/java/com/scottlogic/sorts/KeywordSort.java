@@ -22,9 +22,9 @@ public class KeywordSort implements PostSorter {
         List<UserPost> listToBeSorted = filterByKeyWord.filter(inputList);
         int[] count = new int[listToBeSorted.size()];
 
-        for (int i = 0; i < listToBeSorted.size(); i++) {
+        for (UserPost userPost : listToBeSorted) {
 
-            sortedMap.put(countKeyWords(splitContent(listToBeSorted.get(i))), listToBeSorted.get(i));
+            sortedMap.put(countKeyWords(splitContent(userPost)), userPost);
         }
 
         finalList.addAll(sortedMap.values());

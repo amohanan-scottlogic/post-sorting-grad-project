@@ -38,8 +38,7 @@ public class TopicFinder {
     private List<String> getStopWords() throws IOException {
         String filePath = "src/main/resources/English_StopWords.txt";
         File file = new File(filePath);
-        List<String> stopWords = Files.readAllLines(Paths.get(String.valueOf(file)));
-        return stopWords;
+        return Files.readAllLines(Paths.get(String.valueOf(file)));
     }
 }
 
