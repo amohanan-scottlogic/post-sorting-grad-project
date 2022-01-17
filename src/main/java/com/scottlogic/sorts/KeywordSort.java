@@ -8,7 +8,7 @@ import java.util.*;
 public class KeywordSort implements PostSorter {
     private String keyWord;
 
-    public KeywordSort (String keyWord) {
+    public KeywordSort(String keyWord) {
         this.keyWord = keyWord;
     }
 
@@ -16,7 +16,7 @@ public class KeywordSort implements PostSorter {
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
 
         TreeMap<Integer, UserPost> sortedMap = new TreeMap<>();
-        List<UserPost> finalList =new ArrayList<>();
+        List<UserPost> finalList = new ArrayList<>();
         ContentFilter filterByKeyWord = new ContentFilter(keyWord);
 
         List<UserPost> listToBeSorted = filterByKeyWord.filter(inputList);
@@ -24,25 +24,21 @@ public class KeywordSort implements PostSorter {
 
         for (int i = 0; i < listToBeSorted.size(); i++) {
 
-            String[] words = splitContent(listToBeSorted.get(i));
-            count[i] = checkForCountOfKeyWordInContent(words);
-            sortedMap.put(count[i], listToBeSorted.get(i));
+            sortedMap.put(countKeyWords(splitContent(listToBeSorted.get(i))), listToBeSorted.get(i));
         }
 
-        for ( UserPost userPost: sortedMap.values()) {
-            finalList.add(userPost);
-        }
+        finalList.addAll(sortedMap.values());
 
-        if(orderIn==SortOrder.DESC) {
+        if (orderIn == SortOrder.DESC) {
             Collections.reverse(finalList);
         }
 
         return finalList;
     }
 
-    private int checkForCountOfKeyWordInContent(String[] words) {
+    private int countKeyWords(String[] words) {
 
-        int keyWordCount=0;
+        int keyWordCount = 0;
         for (String word : words) {
             if (word.contains(keyWord)) {
                 keyWordCount++;
