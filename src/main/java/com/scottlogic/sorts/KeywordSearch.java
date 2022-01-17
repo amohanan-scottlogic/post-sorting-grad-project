@@ -23,7 +23,6 @@ public class KeywordSearch {
                 if (words[j].compareToIgnoreCase(keyWord) == 0) {
                     count[i]++;
                 }
-
             }
         }
         int tempOrder;

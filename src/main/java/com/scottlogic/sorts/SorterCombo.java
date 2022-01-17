@@ -13,9 +13,11 @@ public class SorterCombo implements PostSorter{
         this.sorterB = sorterB;
     }
 
+
     public List<UserPost> sort(List<UserPost> inputList, SortOrder orderIn) {
         List<UserPost> sortedBySortB = sorterB.sort(inputList, orderIn);
         List<UserPost> sortedBySortA = sorterA.sort(sortedBySortB, orderIn);
+
         return sortedBySortA;
     }
 }

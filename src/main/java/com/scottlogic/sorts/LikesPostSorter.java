@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 
@@ -21,13 +22,12 @@ public class LikesPostSorter implements PostSorter {
             return listToBeSorted;
         }
         listToBeSorted = NullPostChecker.nullPostCheck(inputList);
-        switch (orderIn) {
 
-            case ASC -> Collections.sort(listToBeSorted, Comparator.comparingInt(UserPost::getLikeCount));
+        List<UserPost> listSorted = listToBeSorted.stream()
+                .sorted(orderIn.isAscending() ? Comparator.comparingInt(UserPost::getLikeCount) : Collections.reverseOrder(comparing(UserPost::getLikeCount)))
+                .collect(Collectors.toList());
 
-            case DESC -> Collections.sort(listToBeSorted, Collections.reverseOrder(comparing(UserPost::getLikeCount)));
-        }
 
-        return listToBeSorted;
+        return listSorted;
     }
 }

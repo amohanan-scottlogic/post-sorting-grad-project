@@ -40,6 +40,7 @@ public class DatePostSorterTest {
     @Test
     public void sort_oneObjectListAsc_oneObjectListReturned() {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+
         List<UserPost> userPosts = Collections.singletonList(userPost1);
 
         List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.ASC);
@@ -82,6 +83,7 @@ public class DatePostSorterTest {
 
     @Test
     public void sort_emptyListAsc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByDate.sort(new ArrayList<>(), SortOrder.ASC);
 
         Assert.assertTrue(actualResult.isEmpty());
@@ -117,6 +119,7 @@ public class DatePostSorterTest {
     @Test
     public void sort_oneObjectListDesc_oneObjectListReturned() {
         UserPost userPost1 = createUserPost(OffsetDateTime.of(2012, 1, 3, 7, 12, 3, 0, ZoneOffset.UTC));
+
         List<UserPost> userPosts = Collections.singletonList(userPost1);
 
         List<UserPost> actualResult = sortByDate.sort(userPosts, SortOrder.DESC);
@@ -152,6 +155,7 @@ public class DatePostSorterTest {
 
     @Test
     public void sort_nullListDesc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByDate.sort(null, SortOrder.DESC);
 
         Assert.assertTrue(actualResult.isEmpty());
@@ -159,6 +163,7 @@ public class DatePostSorterTest {
 
     @Test
     public void sort_emptyListDesc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByDate.sort(new ArrayList<>(), SortOrder.DESC);
 
         Assert.assertTrue(actualResult.isEmpty());

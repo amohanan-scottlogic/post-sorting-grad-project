@@ -132,6 +132,7 @@ public class ContentPostSorterTest {
         UserPost userPost3 = createUserPost("Hello World!");
         List<UserPost> userPosts = Arrays.asList(userPost1, userPost2, userPost3);
 
+
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(userPost2, userPost1, userPost3);
 
@@ -143,6 +144,7 @@ public class ContentPostSorterTest {
         UserPost withoutNewLine = createUserPost("An example of a post with lines breaks.");
         UserPost withNewLine = createUserPost("An example of a post \nwith lines breaks.");
         List<UserPost> userPosts = Arrays.asList(withoutNewLine, withNewLine);
+
 
         List<UserPost> actualResult = sortByContent.sort(userPosts, SortOrder.DESC);
         List<UserPost> expectedResult = Arrays.asList(withNewLine, withoutNewLine);
@@ -184,6 +186,7 @@ public class ContentPostSorterTest {
 
     @Test
     public void sort_emptyListDesc_emptyListReturned() {
+
         List<UserPost> actualResult = sortByContent.sort(new ArrayList<>(), SortOrder.DESC);
 
         Assert.assertTrue(actualResult.isEmpty());
